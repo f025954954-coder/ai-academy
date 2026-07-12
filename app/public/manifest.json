@@ -1,0 +1,12 @@
+{
+  "name": "אקדמיית AI",
+  "short_name": "אקדמיית AI",
+  "description": "האקדמיה המקצועית ללימוד הנדסת AI מאפס עד production",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0e14",
+  "theme_color": "#0b1120",
+  "dir": "rtl",
+  "lang": "he",
+  "icons": []
+}
