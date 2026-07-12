@@ -13,6 +13,7 @@
 - ✅ מערכת רמזים מדורגת לפני חשיפת פתרון
 - ✅ סימולטורים ייעודיים: ממיר בינארי, מחשב צעצוע CPU/זיכרון, NetworkJourney, HttpPlayground, RoleSort (רכיב כללי — משמש גם ל-client/server וגם לסוגי למידה), TerminalSimulator, GitSimulator, ApiCallerLab, NestedCircles, ConfusionMatrixLab, SpamClassifierLab, **NeuralNetworkVisualizer** (forward pass אינטראקטיבי, כללי לכל מספר שכבות), **GradientDescentVisualizer** (אנימציית ירידת גרדיאנט), **PixelDrawPad** (רכיב קנבס-ציור-פיקסלים כללי לשימוש חוזר בכל שיעור עתידי), **DigitRecognizerLab**; ⬜ Docker/DB playground — ימתינו לטראק ה-DevOps/Backend הקצר בעתיד
 - ✅ **EngineeringInsights** — רכיב תוכן אחיד חדש ("לחשוב כמו מהנדס AI"): למה/חלופות/מתי לא/טעויות/ביצועים/עלות/אבטחה/תחזוקה/מערכות אמיתיות. ישולב מעכשיו בכל שיעור AI מרכזי (Claude Code, MCP, RAG, Agents) לעקביות
+- ✅ **TokenVisualizer**, **AttentionVisualizer**, **ContextWindowVisualizer**, **TokenCostCalculator** — רביעיית ויזואלייזרים ל-LLM internals, כולם כלליים לשימוש חוזר בשיעורי Prompt Engineering/RAG/Agents הבאים
 - ✅ בוחן ידע (QuizEngine)
 - ✅ שיעורי בית
 - ✅ מיני/פרויקט מודול
