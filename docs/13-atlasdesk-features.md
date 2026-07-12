@@ -12,7 +12,7 @@
 | 4 | MCP + Tool Calling (בדיקת סטטוס פנייה אמיתי) | MCP (ai-integration/mcp-tools) | ✅ | `app/api/ai/tool-chat/route.ts`, `lib/atlasdesk/tools.ts`, `components/atlasdesk/support-chat.tsx` ("כלים מחוברים") |
 | 5 | Embeddings + חיפוש סמנטי (מאמרי עזרה) | ai-integration/embeddings-vector-db | ✅ | `app/api/ai/semantic-search/route.ts`, `lib/atlasdesk/embeddings.ts`, `components/playground/semantic-search-lab.tsx` |
 | 6 | RAG — תשובות מבוססות מאמרי עזרה + ציטוט מקור | ai-integration/rag | ✅ | `app/api/ai/rag-chat/route.ts`, `components/atlasdesk/support-chat.tsx` ("RAG מופעל") |
-| 7 | סוכן AI עם זיכרון שיחה | ai-agents/single-agent | ⬜ | — |
+| 7 | סוכן AI אוטונומי עם הגנת production (זיהוי ניחוש חוזר, human-in-the-loop) | ai-agents/single-agent | ✅ | `app/api/ai/agent-chat/route.ts`, `components/atlasdesk/support-chat.tsx` ("🤖 סוכן") |
 | 8 | אסקלציה רב-סוכנית | ai-agents/multi-agent | ⬜ | — |
 | 9 | ניטור/דשבורד שיחות | production-ai/monitoring-scale | ⬜ | — |
 | 10 | Auth + ניהול משתמשים/ארגונים | production-ai/security-auth (חדש), saas-capstone | ⬜ | — |

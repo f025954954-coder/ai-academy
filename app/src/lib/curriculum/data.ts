@@ -836,7 +836,62 @@ export const TRACKS: TrackSummary[] = [
     goal: "סוכן בודד, רב-סוכנים, אוטומציה עסקית",
     color: "#fb923c",
     modules: [
-      { slug: "single-agent", title: "סוכן AI בודד", description: "לולאת agent, זיכרון, תכנון", projectBrief: "סוכן משימות אישי", lessons: [] },
+      {
+        slug: "single-agent",
+        title: "סוכן AI בודד",
+        description: "לולאת agent, זיכרון, תכנון",
+        projectBrief: "AtlasDesk מקבל סוכן אמיתי עם החלטה אוטונומית",
+        lessons: [
+          {
+            slug: "agent-loop-anatomy",
+            title: "אנטומיית לולאת Agent: Think-Act-Observe",
+            objectives: [
+              "להבין את ההבדל בין 'קריאת API בודדת' ל'סוכן' — לולאה איטרטיבית עם החלטות",
+              "להכיר את שלבי הלולאה: תכנון (think), פעולה (act, בד\"כ tool call), תצפית (observe)",
+              "להבין מתי סוכן עוצר (הגיע למטרה, מיצה תקציב, נתקע)",
+            ],
+            estMinutes: 30,
+            difficulty: "מתקדם",
+            prerequisites: ["פרויקט מודול: AtlasDesk עונה מתוך בסיס הידע האמיתי שלו"],
+          },
+          {
+            slug: "agent-memory-systems",
+            title: "מערכות זיכרון לסוכנים",
+            objectives: [
+              "להבחין בין short-term memory (בתוך לולאה בודדת) ל-long-term memory (בין הרצות)",
+              "להבין מתי RAG משמש כזיכרון long-term של סוכן",
+              "לתכנן איזה מידע לשמר בזיכרון ואיזה 'לזרוק' כדי לא לפוצץ את חלון ההקשר",
+            ],
+            estMinutes: 30,
+            difficulty: "מתקדם",
+            prerequisites: ["agent-loop-anatomy"],
+          },
+          {
+            slug: "production-agent-case-study",
+            title: "מקרה בוחן production: כשלים, התאוששות וניטור סוכנים",
+            objectives: [
+              "להכיר תרחישי כשל אופייניים לסוכנים (לולאה אינסופית, tool שגוי, drift מהמטרה)",
+              "להבין אסטרטגיות התאוששות: budget מקסימלי, human-in-the-loop, circuit breakers",
+              "להבין מה מנטרים בסוכן production (מספר סיבובים, עלות לריצה, אחוז השלמת משימה)",
+            ],
+            estMinutes: 35,
+            difficulty: "מתקדם",
+            prerequisites: ["agent-memory-systems"],
+          },
+          {
+            slug: "project-atlasdesk-agent",
+            title: "פרויקט מודול: AtlasDesk מקבל סוכן עם החלטה אוטונומית",
+            objectives: [
+              "לתכנן ולממש סוכן שמחליט בעצמו אילו כלים להפעיל ומתי לעצור",
+              "להוסיף הגנות production (מגבלת סיבובים, מגבלת עלות, לוג מלא)",
+              "לבדוק את הסוכן על מקרה שבו הוא צריך כמה סיבובי tool calling כדי לענות",
+            ],
+            estMinutes: 45,
+            difficulty: "מתקדם",
+            prerequisites: ["production-agent-case-study"],
+          },
+        ],
+      },
       { slug: "multi-agent", title: "מערכות רב-סוכניות", description: "תיאום, orchestration", projectBrief: "צוות סוכנים למשימה מורכבת", lessons: [] },
       { slug: "automation-scraping", title: "אוטומציה ו-Web Scraping", description: "scraping אחראי, webhooks", projectBrief: "מערכת אוטומציה עסקית", lessons: [] },
     ],

@@ -22,14 +22,21 @@ interface Msg {
   usage?: { inputTokens: number; outputTokens: number };
   toolLog?: ToolLogEntry[];
   sources?: SourceEntry[];
+  stoppedReason?: string;
 }
 
-type ChatMode = "plain" | "tools" | "rag";
+type ChatMode = "plain" | "tools" | "rag" | "agent";
 
 const MODE_ENDPOINT: Record<ChatMode, string> = {
   plain: "/api/ai/chat",
   tools: "/api/ai/tool-chat",
   rag: "/api/ai/rag-chat",
+  agent: "/api/ai/agent-chat",
+};
+
+const STOPPED_REASON_LABEL: Record<string, string> = {
+  repeated_tool_call: "⚠️ הסוכן זיהה שהוא חוזר על עצמו ועצר לבקש הבהרה (הגנת production)",
+  max_rounds: "⚠️ הסוכן הגיע למגבלת הסיבובים המקסימלית",
 };
 
 const STORAGE_KEY = "atlasdesk:conversation:v1";
@@ -103,6 +110,7 @@ export function SupportChat() {
           usage: data.usage,
           toolLog: data.toolLog,
           sources: data.sources,
+          stoppedReason: data.stoppedReason,
         },
       ]);
     } catch {
@@ -114,11 +122,11 @@ export function SupportChat() {
 
   return (
     <div className="mx-auto flex h-[70vh] max-w-2xl flex-col overflow-hidden rounded-2xl border border-border bg-card shadow-xl">
-      <div className="flex items-center justify-between border-b border-border px-4 py-3">
+      <div className="flex flex-wrap items-center justify-between gap-2 border-b border-border px-4 py-3">
         <div className="flex items-center gap-2 font-bold">
           <Bot size={18} className="text-primary" /> AtlasDesk Support
         </div>
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setMode((m) => (m === "tools" ? "plain" : "tools"))}
             title="מפעיל כלי 'בדוק סטטוס פנייה' אמיתי (נסה: AD-1042, AD-2087, AD-3311)"
@@ -136,6 +144,15 @@ export function SupportChat() {
             }`}
           >
             📚 RAG מופעל
+          </button>
+          <button
+            onClick={() => setMode((m) => (m === "agent" ? "plain" : "agent"))}
+            title="מפעיל סוכן אוטונומי — מזהה ניחושים חוזרים ועוצר לבקש הבהרה (human-in-the-loop)"
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              mode === "agent" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted"
+            }`}
+          >
+            🤖 סוכן
           </button>
           <button
             onClick={() => setDevMode((d) => !d)}
@@ -190,6 +207,11 @@ export function SupportChat() {
               {Array.isArray(m.sources) && m.sources.length === 0 && (
                 <p className="mt-1.5 border-t border-border/30 pt-1.5 text-[10px] italic opacity-60">
                   לא נמצאו מאמרי עזרה רלוונטיים — התשובה לא מבוססת על מקור
+                </p>
+              )}
+              {m.stoppedReason && STOPPED_REASON_LABEL[m.stoppedReason] && (
+                <p className="mt-1.5 rounded bg-warning/10 px-1.5 py-1 text-[10px] text-warning">
+                  {STOPPED_REASON_LABEL[m.stoppedReason]}
                 </p>
               )}
               {devMode && m.usage && (
