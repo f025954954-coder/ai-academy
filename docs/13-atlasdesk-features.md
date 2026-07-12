@@ -7,11 +7,16 @@
 |---|---|---|---|---|
 | 1 | מנוע שיחה בסיסי + system prompt מובנה | Prompt Engineering (6.1) | ✅ | `components/atlasdesk/support-chat.tsx`, `lib/atlasdesk/config.ts` |
 | 2 | מצב מפתח: טוקנים/עלות אמיתיים לכל הודעה | Prompt Engineering (6.1) | ✅ | `components/atlasdesk/support-chat.tsx` |
-| 3 | Claude Code agentic workflows | Claude Code (6.2) | ⬜ | — |
-| 4 | MCP + Tool Calling (בדיקת סטטוס הזמנה) | MCP (7.1) | ⬜ | — |
-| 5 | Embeddings + חיפוש סמנטי | Embeddings (7.2) | ⬜ | — |
-| 6 | RAG — תשובות מבוססות מסמכי מוצר | RAG (7.3) | ⬜ | — |
-| 7 | סוכן AI עם זיכרון שיחה | AI Agents (8.1) | ⬜ | — |
-| 8 | אסקלציה רב-סוכנית | Multi-Agent (8.2) | ⬜ | — |
-| 9 | ניטור/דשבורד שיחות | Production (9.1) | ⬜ | — |
-| 10 | Auth + ניהול משתמשים/ארגונים | SaaS (10) | ⬜ | — |
+| 2.5 | זיכרון שיחה persistent (localStorage, שורד רענון דף) | Claude Code Mastery — תכנון וארכיטקטורה (6.2מ2) | ✅ | `components/atlasdesk/support-chat.tsx` |
+| 3 | Claude Code agentic workflows (התקנה, CLAUDE.md, context, תכנון) | Claude Code Mastery (מודולים 1-2) | ✅ | `docs/14-claude-code-track.md`, `tracks/claude-code-mastery/**` |
+| 4 | MCP + Tool Calling (בדיקת סטטוס פנייה אמיתי) | MCP (ai-integration/mcp-tools) | ✅ | `app/api/ai/tool-chat/route.ts`, `lib/atlasdesk/tools.ts`, `components/atlasdesk/support-chat.tsx` ("כלים מחוברים") |
+| 5 | Embeddings + חיפוש סמנטי | ai-integration/embeddings-vector-db | ⬜ | — |
+| 6 | RAG — תשובות מבוססות מסמכי מוצר | ai-integration/rag | ⬜ | — |
+| 7 | סוכן AI עם זיכרון שיחה | ai-agents/single-agent | ⬜ | — |
+| 8 | אסקלציה רב-סוכנית | ai-agents/multi-agent | ⬜ | — |
+| 9 | ניטור/דשבורד שיחות | production-ai/monitoring-scale | ⬜ | — |
+| 10 | Auth + ניהול משתמשים/ארגונים | production-ai/security-auth (חדש), saas-capstone | ⬜ | — |
+
+הערה: יכולת #4 (Tool Calling) מדגימה function calling אמיתי דרך Claude API (`tools` param, `tool_use`/`tool_result`
+round-trip) — לא MCP protocol מילולי (client/server נפרד עם transport משלו), כי זה לא מתאים לאפליקציית
+Vercel serverless. השיעורים ב-mcp-tools מסבירים את ההבדל הזה במפורש כתובנה הנדסית.

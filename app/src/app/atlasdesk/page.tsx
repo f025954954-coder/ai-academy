@@ -13,9 +13,9 @@ export default function AtlasDeskPage() {
         </span>
         <h1 className="text-3xl font-extrabold">AtlasDesk</h1>
         <p className="mt-2 text-muted">
-          זהו הפרויקט המסחרי שאתה בונה לאורך האקדמיה — מודול אחר מודול. גרסה זו כוללת רק את מנוע
-          השיחה הבסיסי (Prompt Engineering). לחץ &quot;מצב מפתח&quot; כדי לראות טוקנים ועלות אמיתיים
-          לכל הודעה.
+          זהו הפרויקט המסחרי שאתה בונה לאורך האקדמיה — מודול אחר מודול. השיחה נשמרת אצלך בין
+          רענוני דף. לחץ &quot;כלים מחוברים&quot; ונסה לשאול על פנייה (AD-1042 / AD-2087 / AD-3311)
+          כדי לראות Tool Calling אמיתי בפעולה, ו&quot;מצב מפתח&quot; לראות טוקנים/עלות/יומן כלים.
         </p>
       </div>
       <SupportChat />

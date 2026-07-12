@@ -1,30 +1,63 @@
 "use client";
 
 import * as React from "react";
-import { Send, Loader2, Code2, Bot, User } from "lucide-react";
-import { ATLASDESK_SYSTEM_PROMPT } from "@/lib/atlasdesk/config";
+import { Send, Loader2, Code2, Bot, User, Trash2 } from "lucide-react";
+import { ATLASDESK_SYSTEM_PROMPT, ATLASDESK_TOOL_SYSTEM_PROMPT } from "@/lib/atlasdesk/config";
 import { estimateCallCost } from "@/lib/simulators/pricing";
+
+interface ToolLogEntry {
+  tool: string;
+  input: Record<string, unknown>;
+  result: string;
+}
 
 interface Msg {
   role: "user" | "assistant";
   content: string;
   usage?: { inputTokens: number; outputTokens: number };
+  toolLog?: ToolLogEntry[];
 }
+
+const STORAGE_KEY = "atlasdesk:conversation:v1";
+const WELCOME_MSG: Msg = {
+  role: "assistant",
+  content: "שלום! אני נציג התמיכה של AtlasDesk. איך אפשר לעזור לך היום?",
+};
 
 /**
  * מנוע השיחה של AtlasDesk — הרכיב הראשון בפלטפורמה המסחרית המתמשכת.
  * מודולים עתידיים (Tool Calling, RAG, Agents) יעטפו/ירחיבו רכיב זה, לא יחליפו אותו מאפס.
+ *
+ * שיחה נשמרת ב-localStorage (מודול 6.2 — תכנון וארכיטקטורה): רענון דף לא מוחק את ההיסטוריה.
+ * חוזה הנתונים (Msg[]) הוגדר לפני המימוש, architecture-first, בדיוק כפי שהשיעור מלמד.
  */
 export function SupportChat() {
-  const [messages, setMessages] = React.useState<Msg[]>([
-    {
-      role: "assistant",
-      content: "שלום! אני נציג התמיכה של AtlasDesk. איך אפשר לעזור לך היום?",
-    },
-  ]);
+  const [messages, setMessages] = React.useState<Msg[]>([WELCOME_MSG]);
   const [input, setInput] = React.useState("");
   const [loading, setLoading] = React.useState(false);
   const [devMode, setDevMode] = React.useState(false);
+  const [toolMode, setToolMode] = React.useState(false);
+
+  React.useEffect(() => {
+    try {
+      const raw = window.localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const saved = JSON.parse(raw) as Msg[];
+        if (Array.isArray(saved) && saved.length > 0) setMessages(saved);
+      }
+    } catch {
+      /* התעלמות מקאש פגום — פשוט מתחילים משיחה חדשה */
+    }
+  }, []);
+
+  React.useEffect(() => {
+    window.localStorage.setItem(STORAGE_KEY, JSON.stringify(messages));
+  }, [messages]);
+
+  function clearConversation() {
+    setMessages([WELCOME_MSG]);
+    window.localStorage.removeItem(STORAGE_KEY);
+  }
 
   const totalCost = messages.reduce(
     (sum, m) => sum + (m.usage ? estimateCallCost(m.usage.inputTokens, m.usage.outputTokens) : 0),
@@ -39,16 +72,19 @@ export function SupportChat() {
     setLoading(true);
 
     try {
-      const res = await fetch("/api/ai/chat", {
+      const res = await fetch(toolMode ? "/api/ai/tool-chat" : "/api/ai/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          system: ATLASDESK_SYSTEM_PROMPT,
+          system: toolMode ? ATLASDESK_TOOL_SYSTEM_PROMPT : ATLASDESK_SYSTEM_PROMPT,
           messages: next.map((m) => ({ role: m.role, content: m.content })),
         }),
       });
       const data = await res.json();
-      setMessages((m) => [...m, { role: "assistant", content: data.content, usage: data.usage }]);
+      setMessages((m) => [
+        ...m,
+        { role: "assistant", content: data.content, usage: data.usage, toolLog: data.toolLog },
+      ]);
     } catch {
       setMessages((m) => [...m, { role: "assistant", content: "שגיאת רשת — נסה שוב." }]);
     } finally {
@@ -62,14 +98,32 @@ export function SupportChat() {
         <div className="flex items-center gap-2 font-bold">
           <Bot size={18} className="text-primary" /> AtlasDesk Support
         </div>
-        <button
-          onClick={() => setDevMode((d) => !d)}
-          className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition ${
-            devMode ? "border-primary bg-primary/10 text-primary" : "border-border text-muted"
-          }`}
-        >
-          <Code2 size={12} /> מצב מפתח
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => setToolMode((t) => !t)}
+            title="מפעיל כלי 'בדוק סטטוס פנייה' אמיתי (נסה: AD-1042, AD-2087, AD-3311)"
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              toolMode ? "border-primary bg-primary/10 text-primary" : "border-border text-muted"
+            }`}
+          >
+            🔧 כלים מחוברים
+          </button>
+          <button
+            onClick={() => setDevMode((d) => !d)}
+            className={`flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              devMode ? "border-primary bg-primary/10 text-primary" : "border-border text-muted"
+            }`}
+          >
+            <Code2 size={12} /> מצב מפתח
+          </button>
+          <button
+            onClick={clearConversation}
+            title="נקה שיחה"
+            className="rounded-full border border-border p-1.5 text-muted transition hover:border-danger hover:text-danger"
+          >
+            <Trash2 size={14} />
+          </button>
+        </div>
       </div>
 
       <div className="flex-1 space-y-3 overflow-y-auto p-4">
@@ -84,6 +138,15 @@ export function SupportChat() {
               }`}
             >
               <p className="whitespace-pre-wrap">{m.content}</p>
+              {devMode && m.toolLog && m.toolLog.length > 0 && (
+                <div className="mt-1.5 space-y-1 border-t border-border/30 pt-1.5">
+                  {m.toolLog.map((t, ti) => (
+                    <p key={ti} className="rounded bg-warning/10 px-1.5 py-1 text-[10px] text-warning">
+                      🔧 {t.tool}({JSON.stringify(t.input)}) → {t.result}
+                    </p>
+                  ))}
+                </div>
+              )}
               {devMode && m.usage && (
                 <p className="mt-1 border-t border-border/30 pt-1 text-[10px] opacity-70">
                   {m.usage.inputTokens}+{m.usage.outputTokens} טוקנים · $
