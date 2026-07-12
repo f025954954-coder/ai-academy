@@ -404,7 +404,61 @@ export const TRACKS: TrackSummary[] = [
           },
         ],
       },
-      { slug: "llms", title: "מודלי שפה גדולים (LLMs)", description: "טוקניזציה, טרנספורמר, context window", projectBrief: "כלי ניתוח טוקנים ועלויות", lessons: [] },
+      {
+        slug: "llms",
+        title: "מודלי שפה גדולים (LLMs)",
+        description: "טוקניזציה, טרנספורמר, Attention, context window, עלויות",
+        projectBrief: "מחשבון טוקנים ועלויות אינטראקטיבי",
+        lessons: [
+          {
+            slug: "tokenization",
+            title: "טוקניזציה — איך טקסט הופך למספרים",
+            objectives: [
+              "להבין מהו טוקן ולמה מודלים לא 'רואים' אותיות אלא טוקנים",
+              "להבין למה עברית ושפות אחרות לרוב 'יקרות' יותר בטוקנים מאנגלית",
+              "לנתח טקסט אמיתי ולראות איך הוא מתפרק לטוקנים",
+            ],
+            estMinutes: 25,
+            difficulty: "מתחיל",
+            prerequisites: ["פרויקט מודול: זיהוי ספרות בכתב יד"],
+          },
+          {
+            slug: "transformer-attention",
+            title: "ארכיטקטורת הטרנספורמר ומנגנון ה-Attention",
+            objectives: [
+              "להבין ברמת עקרון איך טרנספורמר מעבד רצף טקסט שלם במקביל",
+              "להבין את רעיון ה-Attention: כל מילה 'מסתכלת' על כל שאר המילים בעוצמות שונות",
+              "להבין למה הארכיטקטורה הזו החליפה מודלים קודמים (RNN/LSTM)",
+            ],
+            estMinutes: 30,
+            difficulty: "בינוני",
+            prerequisites: ["tokenization"],
+          },
+          {
+            slug: "context-window-limits",
+            title: "Context Window, יכולות ומגבלות",
+            objectives: [
+              "להבין מהו חלון הקשר ומה קורה כשחורגים ממנו",
+              "להבין הזיות (hallucinations) ומקורן",
+              "להבין הטיות (biases) ומגבלות ידע (knowledge cutoff)",
+            ],
+            estMinutes: 25,
+            difficulty: "בינוני",
+            prerequisites: ["transformer-attention"],
+          },
+          {
+            slug: "project-token-cost-calculator",
+            title: "פרויקט מודול: מחשבון טוקנים ועלויות",
+            objectives: [
+              "לבנות כלי שמעריך עלות בפועל של קריאות API בהתאם למודל, לנפח, ולתדירות",
+              "להבין שיקולי עלות כחלק בלתי נפרד מתכנון מוצר AI",
+            ],
+            estMinutes: 35,
+            difficulty: "בינוני",
+            prerequisites: ["context-window-limits"],
+          },
+        ],
+      },
     ],
   },
   {

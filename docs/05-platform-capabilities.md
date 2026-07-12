@@ -24,7 +24,9 @@
 ## תשתית ומערכת
 - ✅ Next.js 16 + TypeScript + Tailwind, RTL מלא, עברית מלאה
 - ✅ מצב כהה/בהיר
-- 🟡 PWA (manifest קיים, service worker offline עדיין לא)
+- ✅ PWA מלא: manifest עם אייקון SVG (any+maskable), **Service Worker אמיתי** (network-first לניווט, cache-first לנכסים סטטיים, אף פעם לא מקאש /api/)
+- ✅ SEO: metadataBase, Open Graph, Twitter cards, robots.ts, sitemap.ts דינמי (נוצר אוטומטית מכל השיעורים הקיימים)
+- ✅ נגישות: קישור "דלג לתוכן הראשי" (skip-link), landmarks סמנטיים, aria-labels על כפתורי אייקון
 - ⬜ Supabase (DB אמיתי, Auth, RLS) — בתהליך חיבור
 - ✅ AI Mentor מחובר ל-Claude API עם מדיניות "רמזים לפני פתרון"
 - 🟡 מעבדות: קוד (✅ Monaco+iframe), Prompt/MCP/RAG/Agent (⬜ placeholder בלבד)
