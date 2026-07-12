@@ -14,6 +14,7 @@
 | 6 | RAG — תשובות מבוססות מאמרי עזרה + ציטוט מקור | ai-integration/rag | ✅ | `app/api/ai/rag-chat/route.ts`, `components/atlasdesk/support-chat.tsx` ("RAG מופעל") |
 | 7 | סוכן AI אוטונומי עם הגנת production (זיהוי ניחוש חוזר, human-in-the-loop) | ai-agents/single-agent | ✅ | `app/api/ai/agent-chat/route.ts`, `components/atlasdesk/support-chat.tsx` ("🤖 סוכן") |
 | 8 | אסקלציה רב-סוכנית (orchestrator-worker: כללי → מומחה-חיוב) | ai-agents/multi-agent | ✅ | `app/api/ai/multi-agent-chat/route.ts`, `lib/atlasdesk/multi-agent.ts`, `components/atlasdesk/support-chat.tsx` ("👥 רב-סוכני") |
+| 8.5 | אוטומציה מונעת-webhook (טיוטת תשובה אוטומטית לפנייה חדשה, HMAC + idempotency) | ai-agents/automation-scraping | ✅ | `app/api/webhooks/new-ticket/route.ts` |
 | 9 | ניטור/דשבורד שיחות | production-ai/monitoring-scale | ⬜ | — |
 | 10 | Auth + ניהול משתמשים/ארגונים | production-ai/security-auth (חדש), saas-capstone | ⬜ | — |
 

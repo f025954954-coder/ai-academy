@@ -1205,7 +1205,50 @@ export const TRACKS: TrackSummary[] = [
           },
         ],
       },
-      { slug: "automation-scraping", title: "אוטומציה ו-Web Scraping", description: "scraping אחראי, webhooks", projectBrief: "מערכת אוטומציה עסקית", lessons: [] },
+      {
+        slug: "automation-scraping",
+        title: "אוטומציה ו-Web Scraping",
+        description: "scraping אחראי, webhooks",
+        projectBrief: "AtlasDesk מקבל אוטומציה מונעת-webhook",
+        lessons: [
+          {
+            slug: "responsible-scraping-principles",
+            title: "עקרונות scraping אחראי",
+            objectives: [
+              "להבין את robots.txt, rate limiting, ותנאי שימוש כגבולות אתיים וחוקיים",
+              "לזהות מתי API רשמי עדיף על scraping",
+              "להבין את הסיכונים ההנדסיים של scraping (HTML שמשתנה, חסימות)",
+            ],
+            estMinutes: 25,
+            difficulty: "בינוני",
+            prerequisites: ["פרויקט מודול: AtlasDesk מקבל אסקלציה רב-סוכנית"],
+          },
+          {
+            slug: "webhook-driven-automation",
+            title: "אוטומציה מונעת-Webhooks",
+            objectives: [
+              "להבין webhooks כאירועים שמפעילים תגובה אוטומטית",
+              "להכיר את עקרון ה-idempotency — טיפול בטוח באירועים כפולים",
+              "לתכנן אבטחת webhook (אימות מקור, לא לסמוך על תוכן בלבד)",
+            ],
+            estMinutes: 25,
+            difficulty: "בינוני",
+            prerequisites: ["responsible-scraping-principles"],
+          },
+          {
+            slug: "project-atlasdesk-webhook-automation",
+            title: "פרויקט מודול: AtlasDesk מקבל אוטומציה מונעת-webhook",
+            objectives: [
+              "לממש endpoint webhook שמקבל אירוע חיצוני (פנייה חדשה) ומייצר טיוטת תשובה אוטומטית",
+              "לשלב את ה-RAG הקיים בתהליך האוטומציה — לא רק בצ'אט האינטראקטיבי",
+              "לתכנן idempotency ואבטחה בסיסית ל-endpoint",
+            ],
+            estMinutes: 40,
+            difficulty: "מתקדם",
+            prerequisites: ["webhook-driven-automation"],
+          },
+        ],
+      },
     ],
   },
   {
