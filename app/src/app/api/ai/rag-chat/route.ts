@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
 import { HELP_ARTICLES } from "@/lib/atlasdesk/help-articles";
 import { embed, cosineSimilarity } from "@/lib/atlasdesk/embeddings";
+import { createAnthropicClient, extractTextBlock, missingApiKeyResponse } from "@/lib/api-routes/anthropic-helpers";
 
 export const runtime = "nodejs";
 
@@ -32,12 +32,8 @@ export async function POST(req: NextRequest) {
     const missing = [!openaiKey && "OPENAI_API_KEY", !anthropicKey && "ANTHROPIC_API_KEY"]
       .filter(Boolean)
       .join(" ו-");
-    return NextResponse.json(
-      {
-        connected: false,
-        content: `אין עדיין חיבור מלא ל-RAG (חסר ${missing} בסביבת השרת). הוסף את המפתחות כדי להפעיל את היכולת הזו במלואה.`,
-      },
-      { status: 200 }
+    return missingApiKeyResponse(
+      `אין עדיין חיבור מלא ל-RAG (חסר ${missing} בסביבת השרת). הוסף את המפתחות כדי להפעיל את היכולת הזו במלואה.`
     );
   }
 
@@ -63,7 +59,7 @@ export async function POST(req: NextRequest) {
         ? relevant.map((r) => `[${r.title}]\n${r.content}`).join("\n\n")
         : "(לא נמצאו מאמרי עזרה רלוונטיים לשאלה זו)";
 
-    const client = new Anthropic({ apiKey: anthropicKey });
+    const client = createAnthropicClient(anthropicKey);
     const response = await client.messages.create({
       model: "claude-sonnet-4-5",
       max_tokens: 1024,
@@ -71,10 +67,9 @@ export async function POST(req: NextRequest) {
       messages: messages.map((m) => ({ role: m.role, content: m.content })),
     });
 
-    const textBlock = response.content.find((b) => b.type === "text");
     return NextResponse.json({
       connected: true,
-      content: textBlock && "text" in textBlock ? textBlock.text : "",
+      content: extractTextBlock(response.content),
       sources: relevant.map((r) => ({ title: r.title, similarity: r.similarity })),
       usage: { inputTokens: response.usage.input_tokens, outputTokens: response.usage.output_tokens },
     });

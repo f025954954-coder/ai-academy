@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
+import { createAnthropicClient, extractTextBlock, missingApiKeyResponse, apiCallErrorResponse } from "@/lib/api-routes/anthropic-helpers";
 
 export const runtime = "nodejs";
 
 /**
- * נתיב Claude API גנרי — משמש את Prompt Playground, AtlasDesk, ופלייגראונדים עתידיים (MCP/RAG/Agent).
+ * נתיב Claude API גנרי — משמש את Prompt Playground, AtlasDesk, ופלייגראונדים עתידיים.
  * לא מחזיק state/היסטוריה בשרת — הקליינט שולח את כל השיחה בכל פעם (בדיוק כמו Claude API האמיתי).
  * מחזיר usage אמיתי (טוקני קלט/פלט בפועל) — לא הערכה — לשימוש במחשבוני עלות מדויקים.
  */
@@ -23,14 +23,8 @@ export async function POST(req: NextRequest) {
   };
 
   if (!apiKey) {
-    return NextResponse.json(
-      {
-        content:
-          "אין עדיין חיבור ל-Claude API (חסר ANTHROPIC_API_KEY בסביבת השרת). הוסף מפתח כדי להפעיל את המעבדה הזו במלואה — כל שאר האתר ממשיך לעבוד כרגיל.",
-        usage: { inputTokens: 0, outputTokens: 0 },
-        connected: false,
-      },
-      { status: 200 }
+    return missingApiKeyResponse(
+      "אין עדיין חיבור ל-Claude API (חסר ANTHROPIC_API_KEY בסביבת השרת). הוסף מפתח כדי להפעיל את המעבדה הזו במלואה — כל שאר האתר ממשיך לעבוד כרגיל."
     );
   }
 
@@ -38,7 +32,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "messages is required" }, { status: 400 });
   }
 
-  const client = new Anthropic({ apiKey });
+  const client = createAnthropicClient(apiKey);
 
   try {
     const response = await client.messages.create({
@@ -48,9 +42,8 @@ export async function POST(req: NextRequest) {
       messages,
     });
 
-    const textBlock = response.content.find((b) => b.type === "text");
     return NextResponse.json({
-      content: textBlock && "text" in textBlock ? textBlock.text : "",
+      content: extractTextBlock(response.content),
       usage: {
         inputTokens: response.usage.input_tokens,
         outputTokens: response.usage.output_tokens,
@@ -58,9 +51,6 @@ export async function POST(req: NextRequest) {
       connected: true,
     });
   } catch (e) {
-    return NextResponse.json(
-      { content: `שגיאה בקריאה ל-Claude API: ${(e as Error).message}`, usage: null, connected: true },
-      { status: 200 }
-    );
+    return apiCallErrorResponse(e);
   }
 }

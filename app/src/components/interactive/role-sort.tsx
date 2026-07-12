@@ -37,6 +37,8 @@ export function RoleSort({
                 <button
                   key={bucket.id}
                   onClick={() => setAssignments((a) => ({ ...a, [item.id]: bucket.id }))}
+                  aria-pressed={selected}
+                  aria-label={`שייך "${item.label}" ל${bucket.label}`}
                   className={cn(
                     "flex items-center gap-1 rounded-full border px-3 py-1 text-xs font-semibold transition",
                     selected && !checked && "border-primary bg-primary/10 text-primary",

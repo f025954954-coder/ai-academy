@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import Anthropic from "@anthropic-ai/sdk";
 import { ATLASDESK_TOOLS, executeTool } from "@/lib/atlasdesk/tools";
+import { createAnthropicClient, extractTextBlock, missingApiKeyResponse } from "@/lib/api-routes/anthropic-helpers";
 
 export const runtime = "nodejs";
 
@@ -29,15 +29,8 @@ export async function POST(req: NextRequest) {
   const { system, messages } = (await req.json()) as { system?: string; messages: ChatMessage[] };
 
   if (!apiKey) {
-    return NextResponse.json(
-      {
-        content:
-          "אין עדיין חיבור ל-Claude API (חסר ANTHROPIC_API_KEY בסביבת השרת). הוסף מפתח כדי להפעיל את מעבדת ה-Tool Calling במלואה.",
-        toolLog: [],
-        usage: { inputTokens: 0, outputTokens: 0 },
-        connected: false,
-      },
-      { status: 200 }
+    return missingApiKeyResponse(
+      "אין עדיין חיבור ל-Claude API (חסר ANTHROPIC_API_KEY בסביבת השרת). הוסף מפתח כדי להפעיל את מעבדת ה-Tool Calling במלואה."
     );
   }
 
@@ -45,7 +38,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "messages is required" }, { status: 400 });
   }
 
-  const client = new Anthropic({ apiKey });
+  const client = createAnthropicClient(apiKey);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const conversation: any[] = messages.map((m) => ({ role: m.role, content: m.content }));
   const toolLog: ToolLogEntry[] = [];
@@ -67,9 +60,8 @@ export async function POST(req: NextRequest) {
       totalOutputTokens += response.usage.output_tokens;
 
       if (response.stop_reason !== "tool_use") {
-        const textBlock = response.content.find((b) => b.type === "text");
         return NextResponse.json({
-          content: textBlock && "text" in textBlock ? textBlock.text : "",
+          content: extractTextBlock(response.content),
           toolLog,
           usage: { inputTokens: totalInputTokens, outputTokens: totalOutputTokens },
           connected: true,

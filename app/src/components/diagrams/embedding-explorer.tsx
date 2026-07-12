@@ -61,23 +61,37 @@ export function EmbeddingExplorer() {
           strokeWidth={0.5}
           strokeDasharray="2 1"
         />
-        {WORDS.map((w) => (
-          <g key={w.label} onClick={() => setSelected(([, second]) => [w.label, second === w.label ? selected[0] : second])}>
-            <motion.circle
-              cx={w.x}
-              cy={w.y}
-              r={selected.includes(w.label) ? 3.2 : 2.2}
-              fill={COLORS[w.group]}
-              className="cursor-pointer"
-              onClick={() =>
-                setSelected((prev) => (prev[0] === w.label ? prev : [w.label, prev[0]]))
-              }
-            />
-            <text x={w.x} y={w.y - 4} fontSize={3.5} textAnchor="middle" fill="currentColor">
-              {w.label}
-            </text>
-          </g>
-        ))}
+        {WORDS.map((w) => {
+          const selectWord = () =>
+            setSelected((prev) => (prev[0] === w.label ? prev : [w.label, prev[0]]));
+          return (
+            <g
+              key={w.label}
+              role="button"
+              tabIndex={0}
+              aria-label={`בחר את המילה ${w.label} להשוואת קרבה`}
+              aria-pressed={selected.includes(w.label)}
+              className="cursor-pointer outline-none"
+              onClick={selectWord}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.preventDefault();
+                  selectWord();
+                }
+              }}
+            >
+              <motion.circle
+                cx={w.x}
+                cy={w.y}
+                r={selected.includes(w.label) ? 3.2 : 2.2}
+                fill={COLORS[w.group]}
+              />
+              <text x={w.x} y={w.y - 4} fontSize={3.5} textAnchor="middle" fill="currentColor">
+                {w.label}
+              </text>
+            </g>
+          );
+        })}
       </svg>
       <div className="mt-3 flex items-center justify-between rounded-lg bg-primary/5 px-3 py-2 text-sm">
         <span>

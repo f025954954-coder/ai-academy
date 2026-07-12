@@ -148,6 +148,7 @@ export function SupportChat() {
           <button
             onClick={clearConversation}
             title="נקה שיחה"
+            aria-label="נקה שיחה"
             className="rounded-full border border-border p-1.5 text-muted transition hover:border-danger hover:text-danger"
           >
             <Trash2 size={14} />
