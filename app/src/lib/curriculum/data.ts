@@ -542,3 +542,31 @@ export function totalLessons(): number {
     0
   );
 }
+
+export interface FlatLesson {
+  trackSlug: string;
+  moduleSlug: string;
+  lessonSlug: string;
+  title: string;
+  href: string;
+}
+
+/** כל השיעורים הקיימים, בסדר לימוד — לשימוש בהמלצה חכמה על "המשך למידה" ובחיפוש. */
+export function allLessonsFlat(): FlatLesson[] {
+  return TRACKS.flatMap((track) =>
+    track.modules.flatMap((module) =>
+      module.lessons.map((lesson) => ({
+        trackSlug: track.slug,
+        moduleSlug: module.slug,
+        lessonSlug: lesson.slug,
+        title: lesson.title,
+        href: `/tracks/${track.slug}/${module.slug}/${lesson.slug}`,
+      }))
+    )
+  );
+}
+
+/** השיעור הראשון שהתלמיד עדיין לא השלים, לפי סדר הלימוד — או null אם הכל הושלם. */
+export function findNextLesson(completedLessonSlugs: string[]): FlatLesson | null {
+  return allLessonsFlat().find((l) => !completedLessonSlugs.includes(l.lessonSlug)) ?? null;
+}

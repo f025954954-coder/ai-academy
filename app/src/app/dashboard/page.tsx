@@ -1,11 +1,11 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, Trophy, Target, ArrowLeft } from "lucide-react";
+import { BookOpen, Trophy, Target, ArrowLeft, Bookmark, PartyPopper } from "lucide-react";
 import { useProgress, levelFromXP } from "@/lib/progress/store";
 import { XPBar } from "@/components/progress/xp-bar";
 import { StreakCalendar } from "@/components/progress/streak-calendar";
-import { TRACKS, totalLessons } from "@/lib/curriculum/data";
+import { totalLessons, findNextLesson, allLessonsFlat } from "@/lib/curriculum/data";
 
 export default function DashboardPage() {
   const { state } = useProgress();
@@ -13,8 +13,8 @@ export default function DashboardPage() {
   const completedCount = state.completedLessons.length;
   const pct = total > 0 ? Math.round((completedCount / total) * 100) : 0;
 
-  const firstModule = TRACKS[0].modules[0];
-  const firstLesson = firstModule.lessons[0];
+  const nextLesson = findNextLesson(state.completedLessons);
+  const bookmarkedLessons = allLessonsFlat().filter((l) => state.bookmarks.includes(l.lessonSlug));
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-12">
@@ -40,17 +40,21 @@ export default function DashboardPage() {
       <div className="mt-10 rounded-2xl border border-primary/30 bg-primary/5 p-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <BookOpen size={22} className="text-primary" />
+            {nextLesson ? (
+              <BookOpen size={22} className="text-primary" />
+            ) : (
+              <PartyPopper size={22} className="text-primary" />
+            )}
             <div>
               <div className="font-bold">המשך למידה</div>
               <div className="text-sm text-muted">
-                {firstLesson ? firstLesson.title : "אין עדיין שיעור פעיל"}
+                {nextLesson ? nextLesson.title : "השלמת את כל השיעורים הבנויים! 🎉"}
               </div>
             </div>
           </div>
-          {firstLesson && (
+          {nextLesson && (
             <Link
-              href={`/tracks/${TRACKS[0].slug}/${firstModule.slug}/${firstLesson.slug}`}
+              href={nextLesson.href}
               className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 font-semibold text-primary-foreground"
             >
               המשך <ArrowLeft size={16} />
@@ -58,6 +62,26 @@ export default function DashboardPage() {
           )}
         </div>
       </div>
+
+      {bookmarkedLessons.length > 0 && (
+        <div className="mt-10">
+          <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">
+            <Bookmark size={18} className="text-warning" /> השיעורים השמורים שלי
+          </h2>
+          <div className="space-y-2">
+            {bookmarkedLessons.map((l) => (
+              <Link
+                key={l.href}
+                href={l.href}
+                className="flex items-center justify-between rounded-xl border border-border bg-card p-3 text-sm transition hover:border-primary"
+              >
+                <span>{l.title}</span>
+                <ArrowLeft size={14} className="text-muted" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
 
       <div className="mt-10">
         <h2 className="mb-4 flex items-center gap-2 text-xl font-bold">

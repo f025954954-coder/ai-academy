@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Clock, BarChart3, ListChecks, CheckCircle2 } from "lucide-react";
+import { Clock, BarChart3, ListChecks, CheckCircle2, Bookmark, StickyNote } from "lucide-react";
 import { useProgress } from "@/lib/progress/store";
+import { cn } from "@/lib/utils";
 
 export interface LessonMeta {
   trackSlug: string;
@@ -29,8 +30,19 @@ export function LessonShell({
   sections: LessonSection[];
 }) {
   const lessonKey = `${meta.trackSlug}/${meta.moduleSlug}/${meta.lessonSlug}`;
-  const { state, completeLesson } = useProgress();
+  const lessonSlug = meta.lessonSlug;
+  const { state, completeLesson, toggleBookmark, saveNote } = useProgress();
   const isComplete = state.completedLessons.includes(lessonKey);
+  const isBookmarked = state.bookmarks.includes(lessonSlug);
+  const [noteDraft, setNoteDraft] = React.useState("");
+  const noteLoadedRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (!noteLoadedRef.current) {
+      setNoteDraft(state.notes[lessonSlug] ?? "");
+      noteLoadedRef.current = true;
+    }
+  }, [state.notes, lessonSlug]);
 
   return (
     <div className="mx-auto flex max-w-6xl gap-8 px-6 py-10">
@@ -50,7 +62,22 @@ export function LessonShell({
 
       <div className="min-w-0 flex-1">
         <header className="mb-8 border-b border-border pb-6">
-          <h1 className="text-3xl font-extrabold">{meta.title}</h1>
+          <div className="flex items-start justify-between gap-3">
+            <h1 className="text-3xl font-extrabold">{meta.title}</h1>
+            <button
+              onClick={() => toggleBookmark(lessonKey)}
+              className={cn(
+                "flex shrink-0 items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-semibold transition",
+                isBookmarked
+                  ? "border-warning bg-warning/10 text-warning"
+                  : "border-border text-muted hover:bg-card"
+              )}
+              aria-pressed={isBookmarked}
+            >
+              <Bookmark size={14} fill={isBookmarked ? "currentColor" : "none"} />
+              {isBookmarked ? "נשמר במועדפים" : "שמור למועדפים"}
+            </button>
+          </div>
           <div className="mt-3 flex flex-wrap gap-4 text-sm text-muted">
             <span className="flex items-center gap-1.5">
               <Clock size={15} /> {meta.estMinutes} דקות
@@ -86,7 +113,21 @@ export function LessonShell({
           ))}
         </div>
 
-        <div className="mt-12 flex justify-center border-t border-border pt-8">
+        <section className="mt-12 rounded-xl border border-border bg-card p-4">
+          <p className="mb-2 flex items-center gap-2 text-sm font-bold">
+            <StickyNote size={15} className="text-primary" /> ההערות האישיות שלי לשיעור הזה
+          </p>
+          <textarea
+            value={noteDraft}
+            onChange={(e) => setNoteDraft(e.target.value)}
+            onBlur={() => saveNote(lessonKey, noteDraft)}
+            placeholder="כתוב כאן הערות, תובנות, או דברים שרצית לזכור מהשיעור..."
+            rows={3}
+            className="w-full rounded-lg border border-border bg-background p-3 text-sm"
+          />
+        </section>
+
+        <div className="mt-8 flex justify-center border-t border-border pt-8">
           <button
             onClick={() => completeLesson(lessonKey)}
             disabled={isComplete}

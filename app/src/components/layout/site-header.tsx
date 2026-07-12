@@ -2,6 +2,7 @@ import Link from "next/link";
 import { GraduationCap } from "lucide-react";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { UserMenu } from "@/components/layout/user-menu";
+import { GlobalSearch } from "@/components/search/global-search";
 
 const NAV = [
   { href: "/tracks", label: "מסלולי לימוד" },
@@ -32,6 +33,7 @@ export function SiteHeader() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          <GlobalSearch />
           <ThemeToggle />
           <UserMenu />
         </div>

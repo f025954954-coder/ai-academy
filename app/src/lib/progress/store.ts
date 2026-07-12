@@ -13,6 +13,8 @@ export interface ProgressState {
   lastActiveDate: string | null;
   completedLessons: string[]; // lesson slug (ייחודי בכל הקוריקולום)
   exerciseAttempts: Record<string, number>; // exerciseId -> attempts
+  bookmarks: string[]; // lesson slugs
+  notes: Record<string, string>; // lesson slug -> תוכן הערה
 }
 
 const DEFAULT_STATE: ProgressState = {
@@ -21,6 +23,8 @@ const DEFAULT_STATE: ProgressState = {
   lastActiveDate: null,
   completedLessons: [],
   exerciseAttempts: {},
+  bookmarks: [],
+  notes: {},
 };
 
 function loadLocal(): ProgressState {
@@ -60,10 +64,13 @@ export function useProgress() {
     const supabase = createSupabaseBrowserClient();
 
     (async () => {
-      const [{ data: profile }, { data: progress }] = await Promise.all([
-        supabase.from("profiles").select("xp, streak_days, last_active_date").eq("id", user.id).single(),
-        supabase.from("lesson_progress").select("lesson_slug"),
-      ]);
+      const [{ data: profile }, { data: progress }, { data: bookmarkRows }, { data: noteRows }] =
+        await Promise.all([
+          supabase.from("profiles").select("xp, streak_days, last_active_date").eq("id", user.id).single(),
+          supabase.from("lesson_progress").select("lesson_slug"),
+          supabase.from("bookmarks").select("lesson_slug"),
+          supabase.from("notes").select("lesson_slug, content"),
+        ]);
 
       if (profile) {
         const next: ProgressState = {
@@ -72,6 +79,8 @@ export function useProgress() {
           lastActiveDate: profile.last_active_date,
           completedLessons: (progress ?? []).map((p) => p.lesson_slug),
           exerciseAttempts: {},
+          bookmarks: (bookmarkRows ?? []).map((b) => b.lesson_slug),
+          notes: Object.fromEntries((noteRows ?? []).map((n) => [n.lesson_slug, n.content])),
         };
         setState(next);
         saveLocal(next);
@@ -138,7 +147,51 @@ export function useProgress() {
     [user]
   );
 
-  return { state, completeLesson, recordAttempt };
+  const toggleBookmark = useCallback(
+    (lessonKey: string) => {
+      const lessonSlug = lessonSlugFromKey(lessonKey);
+      setState((prev) => {
+        const isBookmarked = prev.bookmarks.includes(lessonSlug);
+        const next = {
+          ...prev,
+          bookmarks: isBookmarked
+            ? prev.bookmarks.filter((b) => b !== lessonSlug)
+            : [...prev.bookmarks, lessonSlug],
+        };
+        saveLocal(next);
+
+        if (isSupabaseConfigured && user) {
+          const supabase = createSupabaseBrowserClient();
+          if (isBookmarked) {
+            supabase.from("bookmarks").delete().eq("user_id", user.id).eq("lesson_slug", lessonSlug).then();
+          } else {
+            supabase.from("bookmarks").upsert({ user_id: user.id, lesson_slug: lessonSlug }).then();
+          }
+        }
+        return next;
+      });
+    },
+    [user]
+  );
+
+  const saveNote = useCallback(
+    (lessonKey: string, content: string) => {
+      const lessonSlug = lessonSlugFromKey(lessonKey);
+      setState((prev) => {
+        const next = { ...prev, notes: { ...prev.notes, [lessonSlug]: content } };
+        saveLocal(next);
+        return next;
+      });
+
+      if (isSupabaseConfigured && user) {
+        const supabase = createSupabaseBrowserClient();
+        supabase.from("notes").upsert({ user_id: user.id, lesson_slug: lessonSlug, content }).then();
+      }
+    },
+    [user]
+  );
+
+  return { state, completeLesson, recordAttempt, toggleBookmark, saveNote };
 }
 
 export function levelFromXP(xp: number) {
