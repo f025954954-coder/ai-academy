@@ -670,7 +670,62 @@ export const TRACKS: TrackSummary[] = [
     goal: "MCP, embeddings, RAG, fine-tuning",
     color: "#60a5fa",
     modules: [
-      { slug: "mcp-tools", title: "MCP ו-Tool/Function Calling", description: "פרוטוקול MCP, schema של כלים", projectBrief: "שרת MCP מותאם אישית", lessons: [] },
+      {
+        slug: "mcp-tools",
+        title: "MCP ו-Tool/Function Calling",
+        description: "פרוטוקול MCP, schema של כלים",
+        projectBrief: "AtlasDesk מקבל כלי אמיתי: בדיקת סטטוס פנייה",
+        lessons: [
+          {
+            slug: "tool-function-calling-basics",
+            title: "יסודות Tool/Function Calling",
+            objectives: [
+              "להבין איך מודל 'מבקש' להריץ פונקציה במקום לענות ישירות",
+              "להבין את מבנה ה-tool schema (name, description, input_schema)",
+              "לעקוב אחרי מחזור חיים מלא: בקשה→tool_use→ביצוע→tool_result→תשובה סופית",
+            ],
+            estMinutes: 30,
+            difficulty: "בינוני",
+            prerequisites: ["פרויקט מודול: תוכנית ארכיטקטורה + מימוש ב-AtlasDesk"],
+          },
+          {
+            slug: "mcp-protocol-architecture",
+            title: "פרוטוקול MCP: קונספט וארכיטקטורה",
+            objectives: [
+              "להבין את התפקיד של MCP כפרוטוקול סטנדרטי לחיבור כלים ל-AI",
+              "להבין את ההבדל בין MCP server נפרד (עם transport משלו) ל-tool calling מובנה ב-API",
+              "להכיר את שלושת סוגי היכולות ב-MCP: tools, resources, prompts",
+            ],
+            estMinutes: 30,
+            difficulty: "בינוני",
+            prerequisites: ["tool-function-calling-basics"],
+          },
+          {
+            slug: "building-first-mcp-server",
+            title: "בניית שרת MCP ראשון עם Claude Code",
+            objectives: [
+              "לתכנן ולממש שרת MCP מינימלי (כלי בודד) בעזרת Claude Code",
+              "להבין מתי MCP server נפרד עדיף על tool calling מובנה, ומתי לא",
+              "לחבר את השרת ל-Claude Code עצמו ולבדוק אותו בסשן אמיתי",
+            ],
+            estMinutes: 40,
+            difficulty: "מתקדם",
+            prerequisites: ["mcp-protocol-architecture"],
+          },
+          {
+            slug: "project-atlasdesk-tool-calling",
+            title: "פרויקט מודול: AtlasDesk מקבל כלי אמיתי",
+            objectives: [
+              "לנתח את מימוש ה-Tool Calling האמיתי שכבר קיים ב-AtlasDesk (check_ticket_status)",
+              "להרחיב את AtlasDesk בעזרת Claude Code עם כלי שני משלך",
+              "להבין את שיקולי האבטחה של הרצת כלים שמודל AI מבקש (validation, אילוצים)",
+            ],
+            estMinutes: 45,
+            difficulty: "מתקדם",
+            prerequisites: ["building-first-mcp-server"],
+          },
+        ],
+      },
       { slug: "embeddings-vector-db", title: "Embeddings ומסדי נתונים וקטוריים", description: "similarity search, pgvector", projectBrief: "מנוע חיפוש סמנטי", lessons: [] },
       { slug: "rag", title: "RAG", description: "chunking, retrieval, ranking", projectBrief: "מערכת שוחח עם המסמכים שלך", lessons: [] },
       { slug: "fine-tuning", title: "מושגי Fine-tuning", description: "LoRA, evaluation", projectBrief: "הערכת מודל מותאם", lessons: [] },
