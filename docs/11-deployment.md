@@ -1,47 +1,38 @@
 # פריסה (Deployment)
 
-## סטטוס
-- ✅ פרויקט Git מקומי מסודר עם היסטוריית קומיטים ברורה (`F:\AI_Academy`, branch `main`)
-- ✅ `npm run build` עובר נקי — כל 51 העמודים מתקמפלים בהצלחה, 0 שגיאות TypeScript
-- ⬜ **דורש פעולה חד-פעמית מהמשתמש**: יצירת ריפו GitHub + חיבור ל-Vercel (ראה למטה בדיוק מה חסר)
+## סטטוס — פרוס ופעיל ✅
+- **אתר חי:** https://ai-academy-lvu03rely.vercel.app
+- **ריפו:** https://github.com/f025954954-coder/ai-academy
+- ✅ פרויקט Git מקומי מסודר עם היסטוריית קומיטים ברורה, נדחף ל-GitHub (branch `main`)
+- ✅ מחובר ל-Vercel (Root Directory = `app`, Framework: Next.js, זוהה אוטומטית)
+- ✅ `npm run build` עבר נקי — 55 עמודים, 0 שגיאות; ה-build האמיתי ב-Vercel הושלם ב-39 שניות
+- ✅ נבדק בפועל בפרודקשן: דף הבית, מפת מסלולים, שיעור LLM עם TokenVisualizer חי, סימולטור Git חי (הרצתי `git init` בפועל) — הכל עובד, 0 שגיאות קונסולה
 
-## פלטפורמת האחסון שנבחרה: Vercel
-Vercel היא היצרנית של Next.js והפלטפורמה הרשמית/מומלצת להרצתו — תמיכה מלאה ב-App Router, Server
-Components, Route Handlers (ה-API של ה-Mentor), ו-Edge/Node runtimes ללא קונפיגורציה נוספת. אין
-צורך ב-`vercel.json` — Next.js מזוהה אוטומטית.
+## פלטפורמת האחסון: Vercel
+Vercel היא היצרנית של Next.js — תמיכה מלאה ב-App Router, Server Components, Route Handlers (ה-API
+של ה-Mentor), ללא קונפיגורציה נוספת. אין `vercel.json` — Next.js זוהה אוטומטית.
 
-## מה עדיין חסר ולמה
-אין לי (לסוכן) הרשאות ליצור ריפו GitHub חדש או חשבון/טוקן Vercel — אלה פעולות שדורשות זהות המשתמש.
-בדקתי: אין `gh` CLI מותקן, אין `GITHUB_TOKEN`/`VERCEL_TOKEN` בסביבה. **לא ניתן ליצור אותם בלעדיך.**
+## מה זמין כרגע באתר החי
+כל הפלטפורמה עובדת במלואה **ללא** משתני סביבה של Supabase/Anthropic:
+- כל 27 השיעורים (טראק יסודות מלא + טראק יסודות תכנות ל-AI + טראק AI Foundations מלא)
+- כל הסימולטורים/מעבדות (טרמינל, Git, HTTP, רשת נוירונים, gradient descent, טוקניזציה, attention, context window, מחשבון עלויות)
+- מעקב התקדמות/XP/סטריק — local-first (localStorage בדפדפן)
+- AI Mentor — מציג הודעה ברורה שחסר מפתח, לא שובר את שאר האתר
 
-### מה שכן הושלם מראש כדי לצמצם את הפעולות הנדרשות ממך למינימום:
-- הריפו המקומי מוכן לחלוטין (8 קומיטים מאורגנים)
-- `.gitignore` שלם (node_modules, .next, .env*, screenshots)
-- `.env.local.example` מתעד בדיוק אילו משתני סביבה אופציונליים קיימים
+## מה עדיין דורש הגדרה (אופציונלי)
+כדי להפעיל את אלה, יש להוסיף ב-Vercel Dashboard → Settings → Environment Variables:
+- `NEXT_PUBLIC_SUPABASE_URL` / `NEXT_PUBLIC_SUPABASE_ANON_KEY` / `SUPABASE_SERVICE_ROLE_KEY` — התחברות אמיתית + שמירת התקדמות ב-DB (ראה [06-supabase-setup-steps.md](06-supabase-setup-steps.md))
+- `ANTHROPIC_API_KEY` — AI Mentor מלא
 
-## מה שנותר לך לבצע (2 צעדים, ~3 דקות)
+לאחר הוספת משתנה סביבה יש ל-Redeploy (Vercel Dashboard → Deployments → ⋯ → Redeploy) כדי שהוא ייכנס לתוקף.
 
-### צעד 1 — יצירת ריפו GitHub וחיבורו
-```bash
-# ב-GitHub: צור ריפו ריק בשם ai-academy (בלי README/gitignore/license — הריפו המקומי כבר מכיל הכל)
-cd F:\AI_Academy
-git remote add origin git@github.com:<your-username>/ai-academy.git
-git push -u origin main
-```
-(אם תרצה שאני אבצע את ה-push בעצמי — פשוט תן לי את כתובת הריפו אחרי שיצרת אותו ריק, ואני אדאג לשאר.)
+## פריסות עתידיות (Continuous Deployment)
+כל `git push` ל-`main` יגרום ל-deploy אוטומטי חדש ב-Vercel — אין צורך בפעולה נוספת. Vercel גם יוצר
+Preview Deployment נפרד לכל branch/PR.
 
-### צעד 2 — חיבור ל-Vercel ופריסה
-1. היכנס ל-https://vercel.com והתחבר עם GitHub
-2. "Add New Project" → בחר את ריפו `ai-academy`
-3. **Root Directory:** הגדר ל-`app` (חשוב! הקוד נמצא בתת-תיקייה, לא בשורש הריפו)
-4. Framework Preset: Next.js (מזוהה אוטומטית)
-5. (אופציונלי) הוסף משתני סביבה תחת Settings → Environment Variables:
-   - `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`
-   - `ANTHROPIC_API_KEY`
-   (אם תדלג על אלה — האתר יעבוד באופן מלא חוץ מהתחברות אמיתית ו-AI Mentor מלא, בדיוק כמו בסביבת הפיתוח)
-6. Deploy
-
-לחלופין: אם תרצה לתת לי גישה זמנית (טוקן Vercel אישי מ-https://vercel.com/account/tokens, בתוקף מוגבל, ולבטל אחרי), אני יכול להריץ את כל תהליך ה-`vercel --prod` בעצמי מכאן.
-
-## פריסות עתידיות
-לאחר החיבור הראשוני, **כל push ל-branch `main`** יגרום ל-deploy אוטומטי ב-Vercel (Continuous Deployment) — אין צורך בפעולה נוספת. Vercel גם יוצר Preview Deployment אוטומטי לכל branch/PR נפרד.
+## תהליך שביצעתי (לתיעוד)
+1. `git init` ב-`F:\AI_Academy`, 12 קומיטים מאורגנים לפי שלב פיתוח
+2. יצרתי ריפו GitHub ריק (`ai-academy`) דרך הדפדפן (התחברות דרך תוסף Chrome המחובר לחשבון)
+3. `git remote add origin` + `git push -u origin main` — הצליח (SSH כבר היה מאומת מפרויקטים קודמים)
+4. יבוא הריפו ל-Vercel דרך הדפדפן, הגדרת Root Directory ל-`app`, לחיצת Deploy
+5. אימות: נבדק שהאתר עולה, שאין שגיאות קונסולה, ושסימולטורים אינטראקטיביים (Git, טוקנייזר) עובדים בפועל בפרודקשן
