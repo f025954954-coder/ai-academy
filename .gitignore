@@ -33,3 +33,6 @@ yarn-error.log*
 # local screenshots taken for manual review — not part of the product
 /screenshots/
 screenshots$*
+
+# leftover nested .git from create-next-app auto-init (renamed, not part of repo)
+app/.git-unused-nextjs-init/
