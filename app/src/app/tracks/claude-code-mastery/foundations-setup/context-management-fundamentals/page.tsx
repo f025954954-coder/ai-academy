@@ -1,0 +1,195 @@
+"use client";
+
+import { LessonShell, type LessonMeta, type LessonSection } from "@/components/lesson/lesson-shell";
+import { SlideDeck, type Slide } from "@/components/slides/slide-deck";
+import { ContextWindowVisualizer } from "@/components/diagrams/context-window-visualizer";
+import { PromptComparisonLab } from "@/components/comparisons/prompt-comparison-lab";
+import { EngineeringInsights } from "@/components/lesson/engineering-insights";
+import { QuizEngine, type QuizQuestion } from "@/components/quiz/quiz-engine";
+import { RealWorldTask } from "@/components/exercises/real-world-task";
+
+const META: LessonMeta = {
+  trackSlug: "claude-code-mastery",
+  moduleSlug: "foundations-setup",
+  lessonSlug: "context-management-fundamentals",
+  title: "יסודות ניהול Context בסשן פיתוח",
+  objectives: [
+    "להבין איך context window מתמלא בפועל תוך כדי סשן עבודה",
+    "לדעת מתי ואיך לנקות/לרענן context (compact, סשן חדש)",
+    "להבין את הפשרה בין 'לתת הרבה הקשר' ל'לשמור על מיקוד'",
+  ],
+  estMinutes: 30,
+  difficulty: "בינוני",
+  prerequisites: ["project-structure-claude-md"],
+};
+
+const SLIDES: Slide[] = [
+  {
+    title: "תזכורת: מה זה בכלל context window",
+    bullets: [
+      "כבר למדת את זה במודול ה-LLMs (מסלול AI Foundations) — context window הוא כל מה שהמודל 'רואה' ברגע נתון: CLAUDE.md, היסטוריית השיחה, תוכן קבצים שנקראו, ותוצאות פקודות שהורצו.",
+      "בסשן Claude Code, context מתמלא הרבה יותר מהר מאשר בצ'אט רגיל — כי כל קובץ שנקרא, כל פלט טרמינל, כל תוצאת חיפוש — הכל נכנס לחלון.",
+    ],
+  },
+  {
+    title: "מה קורה כשה-context מתמלא",
+    bullets: [
+      "כשמתקרבים למגבלה, המערכת חייבת לוותר על מידע ישן (או לסכם אותו) כדי להמשיך לעבוד — בדיוק כמו שראית בוויזואלייזר של מודול ה-LLMs.",
+      "בפועל: הסוכן עלול 'לשכוח' החלטות שהתקבלו מוקדם בסשן — למשל, למה בחרתם בגישה מסוימת, או מה כבר נוסה ולא עבד.",
+      "הפקודה `/compact` (או שקילה) מבקשת מהסוכן לסכם את מה שקרה עד כה לכדי תמצית קצרה, ולפנות מקום ל-context חדש בלי לאבד את הנקודות הקריטיות.",
+    ],
+  },
+  {
+    title: "מתי לפתוח סשן חדש לגמרי",
+    bullets: [
+      "אם עברתם למשימה שאין לה קשר למה שדובר קודם — סשן חדש עדיף על ניסיון 'לדחוס' עוד context לא רלוונטי.",
+      "אם הסשן 'נתקע' בלולאה של טעויות חוזרות — לפעמים context מלא בהיסטוריית כשלונות דווקא מוביל לעוד כשלונות. סשן טרי + תקציר קצר של מה שכן עבד יכול לפתור.",
+      "כלל אצבע: סשן ארוך = כמה שיחות אמיתיות שונות שבמקרה קרו באותו terminal window. לפצל לפי נושא, לא לפי זמן.",
+    ],
+  },
+];
+
+const QUIZ: QuizQuestion[] = [
+  {
+    id: "q1",
+    question: "למה סשן Claude Code ממלא את ה-context הרבה יותר מהר מצ'אט טקסט רגיל?",
+    options: [
+      "אין הבדל אמיתי",
+      "כי כל קובץ שנקרא, פלט טרמינל, ותוצאת חיפוש נכנסים לחלון ההקשר — לא רק הודעות טקסט",
+      "כי Claude Code משתמש במודל קטן יותר",
+      "כי חלון ההקשר ב-Claude Code קטן יותר במיוחד",
+    ],
+    correctIndex: 1,
+    explanation: "עבודה על קוד אמיתי מכניסה הרבה 'תוכן' לחלון ההקשר — קריאת קבצים, פלטי בדיקות, תוצאות grep וכו' — לא רק את מה שהמשתמש הקליד.",
+  },
+  {
+    id: "q2",
+    question: "מתי עדיף לפתוח סשן חדש לגמרי במקום להמשיך את הקיים?",
+    options: [
+      "אף פעם — תמיד להמשיך את אותו סשן",
+      "כשעוברים למשימה שאין לה קשר לנושא הקודם, או כשהסשן נתקע בלולאת טעויות חוזרות",
+      "כל 10 דקות בדיוק, ללא קשר לתוכן",
+      "רק כשהמחשב קורס",
+    ],
+    correctIndex: 1,
+    explanation: "המפתח הוא רלוונטיות: context ישן ולא קשור רק 'מרעיש' את הסשן החדש ומקשה על הסוכן להתמקד.",
+  },
+];
+
+const SECTIONS: LessonSection[] = [
+  { id: "slides", label: "מצגת: ניהול context בסשן אמיתי", content: <SlideDeck slides={SLIDES} /> },
+  {
+    id: "visualizer",
+    label: "ויזואלייזר: תפוסת חלון הקשר (מהמודול הקודם, רלוונטי גם כאן)",
+    content: (
+      <div>
+        <p className="mb-3 text-sm text-muted">
+          שלח כמה &quot;הודעות&quot; ברצף וצפה איך חלון ההקשר מתמלא ומתחיל לוותר על תוכן ישן — בדיוק
+          התופעה שקורית בפועל בסשן Claude Code ארוך, רק שבמקום הודעות טקסט, אלו קבצים ופלטי פקודות.
+        </p>
+        <ContextWindowVisualizer windowLimit={250} />
+      </div>
+    ),
+  },
+  {
+    id: "comparison",
+    label: "השוואה: ניהול context קטן/ממוקד מול גדול/מבולגן",
+    content: (
+      <PromptComparisonLab
+        title="שני סגנונות סשן על אותה משימה: 'תקן באג בטופס ההרשמה'"
+        unitLabel="workflow"
+        bad={{
+          label: "לגרור context לא רלוונזי",
+          content: `סשן אחד ארוך שכולל:
+1. דיון על ארכיטקטורת ה-dashboard (לא קשור)
+2. חקירת באג ב-API אחר שנפתרה כבר
+3. השוואת ספריות UI (החלטה שכבר התקבלה)
+4. ולבסוף: "אה כן, וגם יש באג בטופס ההרשמה"`,
+          outcome: "כשמגיעים סוף-סוף לבאג האמיתי, חלון ההקשר כבר מלא בדיונים לא-קשורים. הסוכן עלול לערבב פרטים מהדיונים הקודמים, או שהמידע הקריטי (הבאג עצמו) נדחק החוצה קודם.",
+        }}
+        good={{
+          label: "סשן ממוקד + תקציר קצר",
+          content: `סשן חדש:
+"אני מתקן באג בטופס ההרשמה: שדה האימייל לא מציג שגיאת ולידציה.
+קובץ רלוונטי: src/components/signup-form.tsx.
+הקשר: השתמשנו כבר ב-zod לוולידציה בטפסים אחרים בפרויקט."`,
+          outcome: "חלון ההקשר מוקדש כולו למשימה הנוכחית. הסוכן יכול לקרוא בדיוק את הקובץ הרלוונטי ולהתמקד בפתרון, בלי 'רעש' מדיונים שלא קשורים.",
+        }}
+        takeaway="Context הוא משאב, לא רק 'זיכרון נחמד שיש'. לנהל אותו במודע — לפצל לפי נושא, לסכם כשצריך — הוא כישור הנדסי בפני עצמו, לא פרט טכני שולי."
+      />
+    ),
+  },
+  {
+    id: "engineering",
+    label: "לחשוב כמו מהנדס AI",
+    content: (
+      <EngineeringInsights
+        why="חלון הקשר סופי (בגודל קבוע) הוא מגבלה פיזית אמיתית של המודל, לא בחירת עיצוב שרירותית — לכן ניהולו הוא חלק בלתי נפרד מעבודה יעילה, בדיוק כמו ניהול זיכרון בתכנות מערכות."
+        alternatives="אפשר 'להתעלם' ולתת לסשן לגדול עד שהוא נתקע — עובד לפרויקטים קטנטנים וסשנים קצרים, אבל נשבר במהירות בעבודה יומיומית על פרויקט אמיתי."
+        whenNotTo="למשימה קצרה וממוקדת (שאלה אחת, תיקון קטן), אין צורך לחשוב על ניהול context בכלל — זה שיקול שרלוונטי בעיקר לסשנים ארוכים ורב-שלביים."
+        commonMistakes="לנסות 'לתקן' context מלא ע'י הוספת עוד ועוד הנחיות ('תזכור שאמרתי...') במקום פשוט לפתוח סשן חדש ממוקד — זה רק ממלא עוד יותר את מה שכבר עמוס."
+        cost="context גדול יותר = יותר טוקנים בכל קריאה בודדת = עלות גבוהה יותר וזמן תגובה איטי יותר. ניהול context טוב הוא גם אופטימיזציית עלות, לא רק איכות."
+        realWorld="ב-AtlasDesk, כשתרחיב פיצ'רים במודולים הבאים, תתרגל לפתוח סשן ממוקד לכל פיצ'ר בנפרד — זו בדיוק ההרגל שנבנה כאן."
+      />
+    ),
+  },
+  { id: "quiz", label: "בוחן ידע", content: <QuizEngine questions={QUIZ} /> },
+  {
+    id: "glossary",
+    label: "מונחון",
+    content: (
+      <dl className="grid gap-3 sm:grid-cols-2">
+        {[
+          ["Context Window", "כל המידע שהמודל 'רואה' ברגע נתון — כולל קבצים, פלטי פקודות והיסטוריית שיחה."],
+          ["/compact", "בקשה מהסוכן לסכם את הסשן עד כה לתמצית, כדי לפנות מקום ל-context חדש."],
+          ["Context רלוונטי", "מידע שקשור ישירות למשימה הנוכחית — הפוך מ'רעש' שרק תופס מקום."],
+        ].map(([term, def]) => (
+          <div key={term} className="rounded-lg bg-card p-3">
+            <dt className="font-bold text-primary">{term}</dt>
+            <dd className="text-sm text-muted">{def}</dd>
+          </div>
+        ))}
+      </dl>
+    ),
+  },
+  {
+    id: "real-world-task",
+    label: "משימה מעשית",
+    content: (
+      <RealWorldTask
+        id="cc-context-management-fundamentals"
+        title="תרגל פיצול context בסשן אמיתי על AtlasDesk"
+        context="עבוד מול הריפו של AtlasDesk המשובט אצלך."
+        steps={[
+          "פתח סשן Claude Code ובקש ממנו לסכם את ה-CLAUDE.md ואת מבנה הפרויקט במשפט-שניים.",
+          "המשך באותו סשן ותשאל שאלה שאינה קשורה כלל (למשל על ספרייה חיצונית כלשהי) — שים לב שהיא 'נכנסת' לאותו הקשר.",
+          "עכשיו פתח סשן חדש לגמרי, ותן לו רק את המידע הרלוונטי למשימה ספציפית (למשל: \"תסביר לי איך /api/ai/chat מטפל במקרה שאין מפתח API\").",
+          "השווה: באיזה מהסשנים התשובה הייתה ממוקדת וישירה יותר?",
+        ]}
+        successCriteria={[
+          "חווית בפועל את ההבדל בין סשן 'מעורבב' לסשן ממוקד",
+          "אתה יודע להסביר מתי משתלם לפצל לסשן חדש",
+          "יש לך תחושה מעשית (לא רק תיאורטית) לגבי מה נכנס ל-context בכל פעולה",
+        ]}
+      />
+    ),
+  },
+  {
+    id: "homework",
+    label: "שיעורי בית",
+    content: (
+      <div className="rounded-xl bg-primary/5 p-4 text-sm">
+        <p className="font-semibold">שיעורי בית:</p>
+        <p className="mt-1 text-muted">
+          בפעם הבאה שתעבוד סשן ארוך (מעל 20 דקות) עם Claude Code — עצור לרגע ושאל את עצמך: &quot;האם
+          כל מה שדיברנו עליו עד עכשיו עדיין רלוונטי למה שאני עושה הרגע?&quot; אם לא — זה הזמן לסכם
+          ולפתוח דף חדש.
+        </p>
+      </div>
+    ),
+  },
+];
+
+export default function Page() {
+  return <LessonShell meta={META} sections={SECTIONS} />;
+}
