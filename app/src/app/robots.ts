@@ -3,6 +3,6 @@ import type { MetadataRoute } from "next";
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: { userAgent: "*", allow: "/", disallow: ["/api/", "/dashboard", "/auth/"] },
-    sitemap: "https://ai-academy-lvu03rely.vercel.app/sitemap.xml",
+    sitemap: "https://ai-academy-gray-five.vercel.app/sitemap.xml",
   };
 }
