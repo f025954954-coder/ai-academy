@@ -154,18 +154,20 @@ const SECTIONS: LessonSection[] = [
     ),
   },
   {
-    id: "video",
-    label: "חבילת וידאו (סקריפט הפקה)",
+    id: "recap",
+    label: "רגע לפני שממשיכים: בקצרה",
     content: (
       <div className="rounded-xl border border-border bg-card p-4 text-sm">
-        <p className="mb-2 font-bold">סטוריבורד מקוצר (וידאו מתוכנן, 2.5 דקות)</p>
-        <ol className="list-decimal space-y-1 pr-5">
-          <li>0:00-0:25 — אנימציה: קלסר עם תמונות מצב מתוארכות (מטאפורה ל-commits).</li>
-          <li>0:25-1:15 — הדגמת מסך: init → add → commit בטרמינל אמיתי.</li>
-          <li>1:15-1:50 — תרגול חי בסימולטור Git באתר.</li>
-          <li>1:50-2:20 — חיבור לנושא הבא: ענפים.</li>
-          <li>2:20-2:30 — סיכום + כתוביות.</li>
+        <p className="mb-2 font-bold">init → add → commit, כמו קלסר תמונות-מצב</p>
+        <ol className="list-decimal space-y-1.5 pr-5">
+          <li><strong>git init</strong> — פותח "קלסר" חדש וריק לפרויקט.</li>
+          <li><strong>git add</strong> — מסמן אילו קבצים ייכנסו לתמונת המצב הבאה.</li>
+          <li><strong>git commit</strong> — "מצלם" תמונת מצב מתוארכת ושמורה לצמיתות בהיסטוריה.</li>
         </ol>
+        <p className="mt-3 text-xs text-muted">
+          חזור לסימולטור ה-Git החי למעלה ונסה לבצע init → add → commit על תיקייה משלך, בלי להעתיק
+          פקודות — נסח אותן מהזיכרון.
+        </p>
       </div>
     ),
   },

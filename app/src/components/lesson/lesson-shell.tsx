@@ -32,7 +32,7 @@ export function LessonShell({
   const lessonKey = `${meta.trackSlug}/${meta.moduleSlug}/${meta.lessonSlug}`;
   const lessonSlug = meta.lessonSlug;
   const { state, completeLesson, toggleBookmark, saveNote } = useProgress();
-  const isComplete = state.completedLessons.includes(lessonKey);
+  const isComplete = state.completedLessons.includes(lessonSlug);
   const isBookmarked = state.bookmarks.includes(lessonSlug);
   const [noteDraft, setNoteDraft] = React.useState("");
   const noteLoadedRef = React.useRef(false);

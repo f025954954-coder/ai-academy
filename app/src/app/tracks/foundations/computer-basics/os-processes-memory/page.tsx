@@ -215,20 +215,19 @@ const SECTIONS: LessonSection[] = [
     ),
   },
   {
-    id: "video",
-    label: "חבילת וידאו (סקריפט הפקה)",
+    id: "recap",
+    label: "רגע לפני שממשיכים: בקצרה",
     content: (
       <div className="rounded-xl border border-border bg-card p-4 text-sm">
-        <p className="mb-2 font-bold">סטוריבורד מקוצר (וידאו מתוכנן, 3 דקות)</p>
-        <ol className="list-decimal space-y-1 pr-5">
-          <li>0:00-0:25 — אנימציה: 5 &quot;דמויות&quot; תהליכים מנסות לדבר עם CPU יחיד בו-זמנית.</li>
-          <li>0:25-1:10 — מוטיון גרפיקס: מערכת ההפעלה &quot;מחלקת תורות&quot; — scheduling ויזואלי.</li>
-          <li>1:10-2:00 — הדגמת מסך: Task Manager/Activity Monitor, סגירת תהליך תקוע בפועל.</li>
-          <li>2:00-2:40 — אנימציית &quot;דליפת זיכרון&quot;: בלון שמתנפח לאט עד שמתפוצץ.</li>
-          <li>2:40-3:00 — סיכום קולי + כתוביות + מעבר לתרגיל.</li>
+        <p className="mb-2 font-bold">תהליכים, זיכרון, ודליפות — במשפט לכל אחד</p>
+        <ol className="list-decimal space-y-1.5 pr-5">
+          <li><strong>תהליך</strong> — תוכנית רצה עם משאבים משלה; מערכת ההפעלה מחלקת ביניהם זמן CPU בתורות מהירות (scheduling), מה שנראה לנו כאילו כולם רצים "בו-זמנית".</li>
+          <li><strong>Thread</strong> — "זרם ביצוע" בתוך תהליך בודד — כמה threads באותו תהליך חולקים זיכרון משותף.</li>
+          <li><strong>דליפת זיכרון</strong> — כשתוכנית ממשיכה "לתפוס" זיכרון בלי לשחרר אותו כשהוא כבר לא נחוץ, עד שהמערכת נחנקת.</li>
         </ol>
         <p className="mt-3 text-xs text-muted">
-          הערות עריכה: פונט Heebo לכתוביות, מוזיקת רקע רגועה, מסך מוקלט 1080p, סנכרון כתוביות ±0.2 שנ&#39;.
+          פתח את מנהל המשימות (Task Manager) או Activity Monitor על המחשב שלך עכשיו ומצא תהליך
+          שאתה לא מזהה — זו הדרך הכי טובה להפוך את הרעיון המופשט למשהו מוחשי.
         </p>
       </div>
     ),

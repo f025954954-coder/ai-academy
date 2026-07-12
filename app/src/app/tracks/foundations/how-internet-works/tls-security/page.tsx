@@ -212,18 +212,20 @@ const SECTIONS: LessonSection[] = [
     ),
   },
   {
-    id: "video",
-    label: "חבילת וידאו (סקריפט הפקה)",
+    id: "recap",
+    label: "רגע לפני שממשיכים: בקצרה",
     content: (
       <div className="rounded-xl border border-border bg-card p-4 text-sm">
-        <p className="mb-2 font-bold">סטוריבורד מקוצר (וידאו מתוכנן, 3 דקות)</p>
-        <ol className="list-decimal space-y-1 pr-5">
-          <li>0:00-0:25 — אנימציה: מכתב גלוי (HTTP) מול מכתב בכספת נעולה (HTTPS).</li>
-          <li>0:25-1:20 — מוטיון גרפיקס: 4 שלבי ה-handshake, מסונכרן עם הסימולטור באתר.</li>
-          <li>1:20-2:00 — הדגמת מסך: לחיצה על מנעול הדפדפן, צפייה בפרטי התעודה האמיתיים.</li>
-          <li>2:00-2:40 — אנימציה: CA "חותם" על תעודה, הדפדפן בודק את החתימה.</li>
-          <li>2:40-3:00 — סיכום + כתוביות.</li>
+        <p className="mb-2 font-bold">HTTPS = HTTP + מכתב שכתוב בקוד סודי</p>
+        <ol className="list-decimal space-y-1.5 pr-5">
+          <li><strong>HTTP</strong> — מידע נשלח בגלוי, כל מי שמאזין ברשת יכול לקרוא אותו.</li>
+          <li><strong>TLS Handshake</strong> — דפדפן ושרת "מסכימים" על מפתח הצפנה משותף בכמה שלבים, לפני שנשלח מידע רגיש.</li>
+          <li><strong>תעודת CA</strong> — גורם חיצוני מהימן ש"חותם" ומאשר שהשרת הוא באמת מי שהוא טוען שהוא.</li>
         </ol>
+        <p className="mt-3 text-xs text-muted">
+          לחץ על סמל המנעול ליד כתובת האתר הזה עכשיו וצפה בפרטי התעודה האמיתיים — מי חתם עליה,
+          עד מתי היא בתוקף.
+        </p>
       </div>
     ),
   },

@@ -195,18 +195,20 @@ const SECTIONS: LessonSection[] = [
     ),
   },
   {
-    id: "video",
-    label: "חבילת וידאו (סקריפט הפקה)",
+    id: "recap",
+    label: "רגע לפני שממשיכים: בקצרה",
     content: (
       <div className="rounded-xl border border-border bg-card p-4 text-sm">
-        <p className="mb-2 font-bold">סטוריבורד מקוצר (וידאו מתוכנן, 3 דקות)</p>
-        <ol className="list-decimal space-y-1 pr-5">
-          <li>0:00-0:30 — אנימציה: מסעדה — לקוח (דפדפן) מזמין (method) מהמלצר (שרת).</li>
-          <li>0:30-1:20 — מוטיון גרפיקס: אנטומיה של בקשה — method+path+headers+body מתפרקים לרכיבים.</li>
-          <li>1:20-2:15 — הדגמת מסך: מעבדת ה-HTTP באתר, שליחת כמה בקשות שונות בזמן אמת.</li>
-          <li>2:15-2:45 — אנימציה: "רמזור" קודי סטטוס — ירוק (2xx)/צהוב (4xx)/אדום (5xx).</li>
-          <li>2:45-3:00 — סיכום + כתוביות.</li>
+        <p className="mb-2 font-bold">HTTP כמו מסעדה: לקוח מזמין, מלצר מגיש</p>
+        <ol className="list-decimal space-y-1.5 pr-5">
+          <li><strong>בקשה (request)</strong> — method (GET/POST וכו&#39;) + path + headers + body — כמו "הזמנה" מפורטת למלצר.</li>
+          <li><strong>תשובה (response)</strong> — status code + headers + body — כמו המנה שמגיעה בחזרה, עם "תג" שאומר אם ההזמנה הצליחה.</li>
+          <li><strong>קודי סטטוס</strong> — 2xx = הצליח, 4xx = טעות מצד הלקוח, 5xx = טעות מצד השרת — בדיוק כמו רמזור.</li>
         </ol>
+        <p className="mt-3 text-xs text-muted">
+          חזור למעבדת ה-HTTP החיה למעלה ונסה לשלוח בקשה שתקבל בכוונה קוד 4xx — זו הדרך הכי טובה
+          להבין את ההבדל בין טעות לקוח לטעות שרת בפועל.
+        </p>
       </div>
     ),
   },

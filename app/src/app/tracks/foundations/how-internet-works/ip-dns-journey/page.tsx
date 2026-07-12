@@ -214,18 +214,20 @@ const SECTIONS: LessonSection[] = [
     ),
   },
   {
-    id: "video",
-    label: "חבילת וידאו (סקריפט הפקה)",
+    id: "recap",
+    label: "רגע לפני שממשיכים: בקצרה",
     content: (
       <div className="rounded-xl border border-border bg-card p-4 text-sm">
-        <p className="mb-2 font-bold">סטוריבורד מקוצר (וידאו מתוכנן, 3 דקות)</p>
-        <ol className="list-decimal space-y-1 pr-5">
-          <li>0:00-0:25 — אנימציה: מכתב עם כתובת לא ברורה חוזר לשולח; לעומתו מכתב עם כתובת מדויקת מגיע.</li>
-          <li>0:25-1:15 — מוטיון גרפיקס: 'ספר טלפונים' ענק (DNS) עם שם וכתובת IP לצידו.</li>
-          <li>1:15-2:10 — הדגמת מסך: פתיחת טרמינל, פקודת <code>nslookup google.com</code> אמיתית.</li>
-          <li>2:10-2:45 — אנימציית המסע המלא (תואמת לסימולטור באתר) — דפדפן→DNS→שרת→דפדפן.</li>
-          <li>2:45-3:00 — סיכום + כתוביות.</li>
+        <p className="mb-2 font-bold">DNS זה ספר הטלפונים של האינטרנט</p>
+        <ol className="list-decimal space-y-1.5 pr-5">
+          <li><strong>כתובת IP</strong> — המספר האמיתי שמזהה מחשב ברשת (כמו כתובת בית מדויקת).</li>
+          <li><strong>שם דומיין</strong> — השם הקריא לבני אדם (google.com) שאנחנו מקלידים במקום לזכור IP.</li>
+          <li><strong>DNS</strong> — השירות שמתרגם שם דומיין לכתובת IP, בדיוק כמו ספר טלפונים שמתרגם שם לכתובת.</li>
         </ol>
+        <p className="mt-3 text-xs text-muted">
+          פתח טרמינל אמיתי במחשב שלך ותריץ <code>nslookup google.com</code> (או <code>dig google.com</code>)
+          — תראה בעצמך את כתובת ה-IP האמיתית שמתחבאת מאחורי השם.
+        </p>
       </div>
     ),
   },

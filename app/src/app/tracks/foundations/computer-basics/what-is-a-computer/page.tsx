@@ -228,21 +228,20 @@ const SECTIONS: LessonSection[] = [
     ),
   },
   {
-    id: "video",
-    label: "חבילת וידאו (סקריפט הפקה)",
+    id: "recap",
+    label: "רגע לפני שממשיכים: בקצרה",
     content: (
       <div className="rounded-xl border border-border bg-card p-4 text-sm">
-        <p className="mb-2 font-bold">סטוריבורד מקוצר (וידאו מתוכנן, 3 דקות)</p>
-        <ol className="list-decimal space-y-1 pr-5">
-          <li>0:00-0:20 — פתיח אנימציה: מחשב &quot;נפתח&quot; ומראה שכבות פנימיות (מוטיון גרפיקס).</li>
-          <li>0:20-1:00 — תקריב מצויר על CPU/RAM/Storage כשלוש &quot;דמויות&quot; שעובדות יחד (Whiteboard style).</li>
-          <li>1:00-2:00 — הדגמת מסך: פתיחת Task Manager/Activity Monitor, מצביע חי על שימוש CPU/RAM.</li>
-          <li>2:00-2:40 — אנימציית מסלול הרצת תוכנית (תואמת את הדיאגרמה האינטראקטיבית באתר).</li>
-          <li>2:40-3:00 — סיכום קולי + כתוביות + קריאה לפעולה לתרגיל.</li>
+        <p className="mb-2 font-bold">שלוש הדמויות שגורמות למחשב לעבוד</p>
+        <ol className="list-decimal space-y-1.5 pr-5">
+          <li><strong>CPU</strong> — "המוח": מבצע חישובים והוראות, אחד בכל רגע (או כמה core-ים במקביל).</li>
+          <li><strong>RAM</strong> — "שולחן העבודה": מקום זמני ומהיר לנתונים שבשימוש עכשיו; נמחק כשמכבים.</li>
+          <li><strong>Storage</strong> — "הארון": אחסון קבוע ואיטי יותר, שנשאר גם אחרי כיבוי.</li>
         </ol>
         <p className="mt-3 text-xs text-muted">
-          הערות עריכה: פונט Heebo לכתוביות עברית, מוזיקת רקע רגועה, הקלטת מסך ברזולוציה 1080p, כל
-          כתובית מתוזמנת ±0.2 שנ&#39; מהדיבור.
+          פתח את Task Manager (Windows) או Activity Monitor (Mac) עכשיו על המחשב שלך, ותסתכל
+          כמה RAM ו-CPU תוכנה פתוחה אחת צורכת בזמן אמת — זו הדרך הכי טובה להפוך את שלוש הדמויות
+          למשהו מוחשי, לא רק תיאורטי.
         </p>
       </div>
     ),

@@ -175,18 +175,21 @@ const SECTIONS: LessonSection[] = [
     ),
   },
   {
-    id: "video",
-    label: "חבילת וידאו (סקריפט הפקה)",
+    id: "recap",
+    label: "רגע לפני שממשיכים: בקצרה",
     content: (
       <div className="rounded-xl border border-border bg-card p-4 text-sm">
-        <p className="mb-2 font-bold">סטוריבורד מקוצר (וידאו מתוכנן, 2.5 דקות)</p>
-        <ol className="list-decimal space-y-1 pr-5">
-          <li>0:00-0:20 — אנימציה: תיקיות כארונות מקוננים זה בזה.</li>
-          <li>0:20-1:10 — הדגמת מסך: pwd/ls/cd בטרמינל אמיתי, עם כתוביות מה כל פקודה עושה.</li>
-          <li>1:10-1:50 — תרגול חי בסימולטור באתר.</li>
-          <li>1:50-2:20 — חיבור לנושא הבא: "זו בדיוק השפה ש-Claude Code מדבר".</li>
-          <li>2:20-2:30 — סיכום + כתוביות.</li>
+        <p className="mb-2 font-bold">שלוש הפקודות שכל השאר בונות עליהן</p>
+        <ol className="list-decimal space-y-1.5 pr-5">
+          <li><strong>pwd</strong> — "איפה אני עכשיו?" (Print Working Directory).</li>
+          <li><strong>ls</strong> — "מה יש כאן?" (List).</li>
+          <li><strong>cd</strong> — "לך לשם" (Change Directory).</li>
         </ol>
+        <p className="mt-3 text-xs text-muted">
+          חשוב לזכור: זו בדיוק השפה ש-Claude Code &quot;מדבר&quot; כשהוא מנווט בקוד שלך. פתח טרמינל
+          אמיתי במחשב שלך ונווט לתיקיית המסמכים שלך רק עם שלוש הפקודות האלו, בלי לעזור לעצמך
+          בממשק גרפי.
+        </p>
       </div>
     ),
   },
