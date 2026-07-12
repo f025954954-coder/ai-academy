@@ -1,0 +1,490 @@
+import type { TrackSummary } from "./types";
+
+// מקור אמת: F:\AI_Academy\docs\01-curriculum.md
+// שים לב: מודול 0.1 בלבד בנוי לעומק מלא (שיעורים אמיתיים) — שאר המודולים כרגע ברמת מפה/תכנון
+// ויתמלאו בשיעורים מלאים בהתאם לסדר ב-03-roadmap.md.
+
+export const TRACKS: TrackSummary[] = [
+  {
+    slug: "foundations",
+    order: 0,
+    title: "יסודות (Foundations)",
+    goal: "הבנה אמיתית של איך מחשב, אינטרנט וכלי פיתוח עובדים",
+    color: "#5b5bf6",
+    modules: [
+      {
+        slug: "computer-basics",
+        title: "יסודות מחשב",
+        description: "CPU, זיכרון, איך קוד הופך לתוכנה רצה, ייצוג מידע בינארי",
+        projectBrief: "דמיית 'מחשב צעצוע' ויזואלית בדפדפן",
+        lessons: [
+          {
+            slug: "what-is-a-computer",
+            title: "מה זה בכלל מחשב",
+            objectives: [
+              "להבין את תפקיד ה-CPU, הזיכרון (RAM) והאחסון",
+              "לעקוב אחרי מסלול הרצת תוכנית פשוטה מהלחיצה ועד התוצאה",
+              "להבין למה 'מהירות מעבד' ו'זיכרון' משפיעים על ביצועים",
+            ],
+            estMinutes: 25,
+            difficulty: "מתחיל",
+            prerequisites: [],
+          },
+          {
+            slug: "os-processes-memory",
+            title: "מערכות הפעלה, תהליכים וזיכרון",
+            objectives: [
+              "להבין מהו תהליך (process) ומה ההבדל מ-thread",
+              "להבין ניהול זיכרון בסיסי ומהי דליפת זיכרון",
+              "לצפות בתהליכים רצים במערכת ההפעלה שלך",
+            ],
+            estMinutes: 30,
+            difficulty: "מתחיל",
+            prerequisites: ["what-is-a-computer"],
+          },
+          {
+            slug: "compilation-vs-interpretation",
+            title: "איך קוד הופך לתוכנה רצה",
+            objectives: [
+              "להבין את ההבדל בין קומפילציה לאינטרפרטציה",
+              "להבין מה זה קוד מכונה ואסמבלי ברמת עקרון",
+              "להריץ דוגמה אחת דרך שתי השיטות ולהשוות",
+            ],
+            estMinutes: 25,
+            difficulty: "מתחיל",
+            prerequisites: ["os-processes-memory"],
+          },
+          {
+            slug: "binary-representation",
+            title: "ייצוג מידע: בינארי, טקסט, תמונה, קול",
+            objectives: [
+              "להמיר בין בינארי, עשרוני והקסדצימלי",
+              "להבין קידוד ASCII/Unicode",
+              "להבין איך תמונה וקול מיוצגים כמספרים",
+            ],
+            estMinutes: 30,
+            difficulty: "מתחיל",
+            prerequisites: ["compilation-vs-interpretation"],
+          },
+          {
+            slug: "project-toy-computer",
+            title: "פרויקט: מחשב צעצוע ויזואלי",
+            objectives: [
+              "לבנות דמיית מחשב מינימלי עם 'זיכרון' ו'רגיסטרים'",
+              "להריץ עליו 3-4 פקודות בסיסיות ולראות את הזיכרון משתנה בזמן אמת",
+            ],
+            estMinutes: 45,
+            difficulty: "בינוני",
+            prerequisites: ["binary-representation"],
+          },
+        ],
+      },
+      {
+        slug: "how-internet-works",
+        title: "איך האינטרנט עובד",
+        description: "רשתות, DNS, HTTP/HTTPS, שרתים ולקוחות",
+        projectBrief: "מפה אינטראקטיבית של מסע בקשת HTTP",
+        lessons: [
+          {
+            slug: "ip-dns-journey",
+            title: "רשתות, כתובות IP ו-DNS",
+            objectives: [
+              "להבין מהי כתובת IP ולמה כל מכשיר ברשת צריך אחת",
+              "להבין איך DNS מתרגם שמות דומיין (google.com) לכתובות IP",
+              "לעקוב אחרי מסע חבילת מידע שלב-אחר-שלב מהדפדפן ועד השרת ובחזרה",
+            ],
+            estMinutes: 25,
+            difficulty: "מתחיל",
+            prerequisites: ["project-toy-computer"],
+          },
+          {
+            slug: "http-protocol",
+            title: "פרוטוקול HTTP/HTTPS: בקשה ותגובה",
+            objectives: [
+              "להבין את מבנה בקשת HTTP (method, headers, body)",
+              "להבין קודי סטטוס נפוצים (200, 404, 500 ועוד) ומה כל אחד אומר",
+              "לשלוח בקשות אמיתיות למעבדת HTTP אינטראקטיבית ולפרש את התגובה",
+            ],
+            estMinutes: 25,
+            difficulty: "מתחיל",
+            prerequisites: ["ip-dns-journey"],
+          },
+          {
+            slug: "servers-clients-browsers",
+            title: "שרתים, לקוחות, ודפדפנים — מי עושה מה",
+            objectives: [
+              "להבין את תפקיד הדפדפן כ'לקוח' וה-Server כ'ספק שירות'",
+              "להבין את מחזור החיים המלא של טעינת עמוד אינטרנט",
+              "לזהות אילו שלבים קורים בצד הלקוח ואילו בצד השרת",
+            ],
+            estMinutes: 20,
+            difficulty: "מתחיל",
+            prerequisites: ["http-protocol"],
+          },
+          {
+            slug: "tls-security",
+            title: "אבטחת תשתית בסיסית: TLS, תעודות, HTTPS",
+            objectives: [
+              "להבין למה HTTP רגיל לא בטוח וHTTPS פותר את זה",
+              "להבין את השלבים הבסיסיים ב-TLS Handshake",
+              "להבין מהי תעודה דיגיטלית ומי 'מאשר' אותה",
+            ],
+            estMinutes: 25,
+            difficulty: "בינוני",
+            prerequisites: ["servers-clients-browsers"],
+          },
+          {
+            slug: "project-http-map",
+            title: "פרויקט מודול: מפת מסע בקשת HTTP מלאה",
+            objectives: [
+              "לחבר בין DNS, TCP, TLS ו-HTTP למסע אחד רציף שאתה שולט בו",
+              "לבצע בקשות אמיתיות במעבדת ה-HTTP ולראות את השפעתן",
+            ],
+            estMinutes: 45,
+            difficulty: "בינוני",
+            prerequisites: ["tls-security"],
+          },
+        ],
+      },
+      {
+        slug: "terminal-linux",
+        title: "טרמינל ו-Linux (ממוקד AI)",
+        description: "בדיוק מה שצריך משורת הפקודה כדי לעבוד יעיל עם Claude Code",
+        projectBrief: "פתרון משימה אמיתית בטרמינל אינטראקטיבי",
+        lessons: [
+          {
+            slug: "terminal-essentials",
+            title: "טרמינל: ניווט וקבצים",
+            objectives: [
+              "להבין למה כל עבודה עם Claude Code עוברת דרך הטרמינל",
+              "לנווט בין תיקיות ולנהל קבצים עם pwd/ls/cd/mkdir/touch/rm",
+              "לתרגל בטרמינל אמיתי (מדומה) באתר",
+            ],
+            estMinutes: 20,
+            difficulty: "מתחיל",
+            prerequisites: ["project-http-map"],
+          },
+          {
+            slug: "terminal-pipes-search",
+            title: "צפייה בקבצים וחיפוש: cat, grep, echo",
+            objectives: [
+              "לקרוא תוכן קבצים מהטרמינל עם cat",
+              "לחפש טקסט בתוך קבצים עם grep — כלי שתשתמש בו כל הזמן עם AI-generated code",
+              "להבין למה זה חשוב: Claude Code 'רואה' את הפרויקט שלך דרך אותם כלים בדיוק",
+            ],
+            estMinutes: 20,
+            difficulty: "מתחיל",
+            prerequisites: ["terminal-essentials"],
+          },
+          {
+            slug: "project-terminal-task",
+            title: "פרויקט מודול: פתרון משימה אמיתית בטרמינל",
+            objectives: [
+              "לשלב ניווט, יצירת קבצים וחיפוש כדי לפתור משימה מקצה לקצה",
+              "לבנות ביטחון בעבודה עם שורת פקודה לפני שממשיכים ל-Git",
+            ],
+            estMinutes: 30,
+            difficulty: "בינוני",
+            prerequisites: ["terminal-pipes-search"],
+          },
+        ],
+      },
+      {
+        slug: "git-github",
+        title: "Git ו-GitHub (ממוקד AI)",
+        description: "בדיוק מה שצריך מ-Git כדי לעבוד בזרימת עבודה עם Claude Code",
+        projectBrief: "תיק עבודות דיגיטלי ראשון בגיט",
+        lessons: [
+          {
+            slug: "git-commits-basics",
+            title: "למה Git קיים + init/add/commit",
+            objectives: [
+              "להבין את הבעיה ש-Git פותר (היסטוריה, בטיחות, שיתוף פעולה)",
+              "להבין את המחזור הבסיסי: init → add → commit",
+              "לעקוב אחרי עץ קומיטים מתפתח בסימולטור ויזואלי",
+            ],
+            estMinutes: 20,
+            difficulty: "מתחיל",
+            prerequisites: ["project-terminal-task"],
+          },
+          {
+            slug: "git-branches-merge",
+            title: "ענפים ומיזוג — איך Claude Code עובד בענפים",
+            objectives: [
+              "להבין למה עובדים על ענף (branch) נפרד במקום ישירות על main",
+              "לראות ויזואלית איך merge מאחד שני ענפים",
+              "להבין את זרימת ה-PR הבסיסית שגם agentic coding tools משתמשים בה",
+            ],
+            estMinutes: 25,
+            difficulty: "בינוני",
+            prerequisites: ["git-commits-basics"],
+          },
+          {
+            slug: "project-git-portfolio",
+            title: "פרויקט מודול + קפסטון #1: תיק עבודות ראשון בגיט",
+            objectives: [
+              "לבנות היסטוריית קומיטים נקייה עם הודעות ברורות",
+              "לדמות זרימת עבודה מלאה: branch → commits → merge",
+            ],
+            estMinutes: 40,
+            difficulty: "בינוני",
+            prerequisites: ["git-branches-merge"],
+          },
+        ],
+        isCapstone: true,
+      },
+    ],
+  },
+  {
+    slug: "programming-essentials-ai",
+    order: 1,
+    title: "יסודות תכנות ל-AI",
+    goal: "בדיוק מספיק JavaScript/TypeScript ו-APIs כדי לבנות ולהבין מערכות AI",
+    color: "#22d3ee",
+    modules: [
+      {
+        slug: "js-ts-for-ai",
+        title: "JavaScript ו-TypeScript ל-AI",
+        description: "משתנים, פונקציות, async/fetch, טיפוסים — מה שצריך כדי לקרוא ולכתוב קוד עם Claude Code",
+        projectBrief: "סקריפט שקורא ל-API אמיתי ומעבד תשובה",
+        lessons: [
+          {
+            slug: "javascript-essentials",
+            title: "JavaScript: משתנים, פונקציות, מבני נתונים",
+            objectives: [
+              "לכתוב ולהבין קוד JS בסיסי: משתנים, פונקציות, תנאים, לולאות",
+              "לעבוד עם מערכים ואובייקטים — מבני הנתונים שכל API מחזיר",
+              "להריץ ולנפות קוד במעבדת קוד חיה",
+            ],
+            estMinutes: 30,
+            difficulty: "מתחיל",
+            prerequisites: ["פרויקט מודול + קפסטון #1: תיק עבודות ראשון בגיט"],
+          },
+          {
+            slug: "async-fetch-apis",
+            title: "Async JavaScript ו-fetch — לדבר עם שירותים חיצוניים",
+            objectives: [
+              "להבין Promises ו-async/await — איך JS מתמודד עם פעולות שלוקחות זמן",
+              "להשתמש ב-fetch כדי לקרוא ל-API אמיתי ולקבל תשובה",
+              "להבין את זה כתשתית הכרחית לכל אינטגרציה עם LLM API בהמשך",
+            ],
+            estMinutes: 30,
+            difficulty: "בינוני",
+            prerequisites: ["javascript-essentials"],
+          },
+          {
+            slug: "typescript-essentials",
+            title: "TypeScript: טיפוסים שתופסים באגים לפני שהם קורים",
+            objectives: [
+              "להבין למה קוד שנוצר על ידי AI (וכלים כמו Claude Code) לרוב כתוב ב-TypeScript",
+              "לכתוב טיפוסים בסיסיים, interfaces, ו-union types",
+              "לזהות שגיאות טיפוסים לפני שהקוד בכלל רץ",
+            ],
+            estMinutes: 30,
+            difficulty: "בינוני",
+            prerequisites: ["async-fetch-apis"],
+          },
+          {
+            slug: "project-api-caller",
+            title: "פרויקט מודול: קריאה אמיתית ל-AI Mentor API",
+            objectives: [
+              "לכתוב סקריפט TypeScript שקורא ל-API של המנטור באתר ומעבד את התשובה",
+              "לחבר בין כל מה שנלמד: async/fetch/טיפוסים בפרויקט עובד אחד",
+            ],
+            estMinutes: 40,
+            difficulty: "בינוני",
+            prerequisites: ["typescript-essentials"],
+          },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "ai-foundations",
+    order: 2,
+    title: "יסודות AI",
+    goal: "למידת מכונה, רשתות נוירונים, LLMs",
+    color: "#f472b6",
+    modules: [
+      {
+        slug: "ml-intro",
+        title: "מבוא ל-AI ולמידת מכונה",
+        description: "סוגי למידה, מדדי הצלחה",
+        projectBrief: "מסווג ספאם אינטראקטיבי",
+        lessons: [
+          {
+            slug: "what-is-ai",
+            title: "מהי בינה מלאכותית — AI מול ML מול DL מול LLM",
+            objectives: [
+              "להבחין בין AI (המושג הרחב), ML (למידת מכונה), DL (למידה עמוקה) ו-LLM (מודלי שפה)",
+              "להבין שכל 'עיגול' הוא תת-קבוצה של הקודם לו",
+              "להבין למה Claude הוא LLM ולא סתם 'תוכנה חכמה'",
+            ],
+            estMinutes: 25,
+            difficulty: "מתחיל",
+            prerequisites: ["פרויקט מודול: קריאה אמיתית ל-AI Mentor API"],
+          },
+          {
+            slug: "types-of-learning",
+            title: "סוגי למידה: מונחית, לא-מונחית, חיזוקית",
+            objectives: [
+              "להבין למידה מונחית (supervised) — לומדים מדוגמאות מתויגות",
+              "להבין למידה לא-מונחית (unsupervised) — מוצאים דפוסים בלי תיוג",
+              "להבין למידת חיזוק (reinforcement) — לומדים מניסוי וטעייה עם פרס/עונש",
+            ],
+            estMinutes: 25,
+            difficulty: "מתחיל",
+            prerequisites: ["what-is-ai"],
+          },
+          {
+            slug: "success-metrics",
+            title: "מדדי הצלחה: Accuracy, Precision, Recall, Overfitting",
+            objectives: [
+              "להבין למה 'accuracy' לבד יכול להטעות (למשל בזיהוי מחלה נדירה)",
+              "להבין Precision ו-Recall ומתי כל אחד חשוב יותר",
+              "להבין Overfitting — כשמודל 'משנן' במקום 'מבין'",
+            ],
+            estMinutes: 25,
+            difficulty: "בינוני",
+            prerequisites: ["types-of-learning"],
+          },
+          {
+            slug: "project-spam-classifier",
+            title: "פרויקט מודול: בניית מסווג ספאם אינטראקטיבי",
+            objectives: [
+              "לכוונן משקלים (weights) של מילות מפתח ולראות איך זה משפיע על דיוק המודל",
+              "לחוות באופן מוחשי מהו 'אימון' ולמה איזון (לא overfitting) קריטי",
+            ],
+            estMinutes: 35,
+            difficulty: "בינוני",
+            prerequisites: ["success-metrics"],
+          },
+        ],
+      },
+      {
+        slug: "deep-learning",
+        title: "למידה עמוקה ורשתות נוירונים",
+        description: "נוירון, שכבות, forward pass, backprop, gradient descent",
+        projectBrief: "זיהוי ספרות בכתב יד בדפדפן",
+        lessons: [
+          {
+            slug: "neuron-and-network",
+            title: "הנוירון המלאכותי ורשת מלאה",
+            objectives: [
+              "להבין מהו נוירון מלאכותי: קלטים, משקלים, סכימה, פונקציית אקטיבציה",
+              "להבין איך נוירונים מתחברים לשכבות ובונים רשת",
+              "להריץ forward pass אינטראקטיבי ולראות איך קלט הופך לפלט",
+            ],
+            estMinutes: 30,
+            difficulty: "בינוני",
+            prerequisites: ["פרויקט מודול: בניית מסווג ספאם אינטראקטיבי"],
+          },
+          {
+            slug: "training-gradient-descent",
+            title: "איך רשת 'לומדת': Loss, Backpropagation, Gradient Descent",
+            objectives: [
+              "להבין מהי פונקציית loss ולמה מודל שואף למזער אותה",
+              "להבין את הרעיון מאחורי gradient descent — צעד-צעד לכיוון מינימום",
+              "להבין את ההשפעה הקריטית של learning rate על יציבות האימון",
+            ],
+            estMinutes: 30,
+            difficulty: "בינוני",
+            prerequisites: ["neuron-and-network"],
+          },
+          {
+            slug: "project-digit-recognizer",
+            title: "פרויקט מודול: זיהוי ספרות בכתב יד",
+            objectives: [
+              "לבנות מסווג ספרות עובד בדפדפן ולהבין את שיקולי הבחירה בגישה (kNN מול רשת עמוקה מלאה)",
+              "לחוות את המגבלות והיתרונות של גישות שונות לבעיה זהה",
+            ],
+            estMinutes: 40,
+            difficulty: "בינוני",
+            prerequisites: ["training-gradient-descent"],
+          },
+        ],
+      },
+      { slug: "llms", title: "מודלי שפה גדולים (LLMs)", description: "טוקניזציה, טרנספורמר, context window", projectBrief: "כלי ניתוח טוקנים ועלויות", lessons: [] },
+    ],
+  },
+  {
+    slug: "prompt-ai-dev",
+    order: 3,
+    title: "הנדסת Prompt ופיתוח בעזרת AI",
+    goal: "לכתוב פרומפטים מקצועיים ולפתח עם Claude Code",
+    color: "#a78bfa",
+    modules: [
+      { slug: "prompt-engineering", title: "הנדסת Prompt מקצועית", description: "few-shot, chain-of-thought", projectBrief: "ספריית פרומפטים עם A/B testing", lessons: [] },
+      { slug: "claude-code-dev", title: "Claude Code ופיתוח AI-assisted", description: "agentic coding, workflows", projectBrief: "אוטומציית תהליך פיתוח אמיתי", lessons: [] },
+    ],
+  },
+  {
+    slug: "ai-integration",
+    order: 4,
+    title: "הנדסת אינטגרציית AI",
+    goal: "MCP, embeddings, RAG, fine-tuning",
+    color: "#60a5fa",
+    modules: [
+      { slug: "mcp-tools", title: "MCP ו-Tool/Function Calling", description: "פרוטוקול MCP, schema של כלים", projectBrief: "שרת MCP מותאם אישית", lessons: [] },
+      { slug: "embeddings-vector-db", title: "Embeddings ומסדי נתונים וקטוריים", description: "similarity search, pgvector", projectBrief: "מנוע חיפוש סמנטי", lessons: [] },
+      { slug: "rag", title: "RAG", description: "chunking, retrieval, ranking", projectBrief: "מערכת שוחח עם המסמכים שלך", lessons: [] },
+      { slug: "fine-tuning", title: "מושגי Fine-tuning", description: "LoRA, evaluation", projectBrief: "הערכת מודל מותאם", lessons: [] },
+    ],
+  },
+  {
+    slug: "ai-agents",
+    order: 5,
+    title: "AI Agents ואוטומציה",
+    goal: "סוכן בודד, רב-סוכנים, אוטומציה עסקית",
+    color: "#fb923c",
+    modules: [
+      { slug: "single-agent", title: "סוכן AI בודד", description: "לולאת agent, זיכרון, תכנון", projectBrief: "סוכן משימות אישי", lessons: [] },
+      { slug: "multi-agent", title: "מערכות רב-סוכניות", description: "תיאום, orchestration", projectBrief: "צוות סוכנים למשימה מורכבת", lessons: [] },
+      { slug: "automation-scraping", title: "אוטומציה ו-Web Scraping", description: "scraping אחראי, webhooks", projectBrief: "מערכת אוטומציה עסקית", lessons: [] },
+    ],
+  },
+  {
+    slug: "production-ai",
+    order: 6,
+    title: "מערכות AI בפרודקשן",
+    goal: "ניטור, עלויות, אבטחה, best practices",
+    color: "#ef4444",
+    modules: [
+      { slug: "monitoring-scale", title: "ניטור, לוגים וסקייל", description: "observability, caching", projectBrief: "הוספת ניטור למערכת קיימת", lessons: [] },
+      { slug: "cost-security", title: "אופטימיזציית עלויות ואבטחה", description: "Prompt Injection Defense", projectBrief: "הקשחה ומבדק Red-Team עצמי", lessons: [] },
+      { slug: "production-best-practices", title: "Best Practices לפרודקשן", description: "SLA, rollback, feature flags", projectBrief: "Runbook ו-Playbook תקריות", lessons: [] },
+    ],
+  },
+  {
+    slug: "saas-capstone",
+    order: 7,
+    title: "פיתוח SaaS ומסחור",
+    goal: "פרויקט הגמר: פלטפורמת AI SaaS מלאה",
+    color: "#facc15",
+    modules: [
+      { slug: "saas-planning", title: "תכנון מוצר SaaS AI", description: "מיפוי משתמשים, תמחור, MVP", projectBrief: "מסמך MVP מלא", lessons: [] },
+      { slug: "saas-build", title: "בנייה מלאה", description: "שילוב כל מה שנלמד", projectBrief: "פלטפורמת SaaS מלאה", lessons: [], isCapstone: true },
+      { slug: "saas-business", title: "עסקי: billing ואונבורדינג", description: "subscriptions, analytics", projectBrief: "מערכת חיוב פעילה", lessons: [] },
+      { slug: "saas-launch", title: "השקה", description: "דיפלוי, ניטור, שיווק טכני", projectBrief: "השקה לפרודקשן אמיתית", lessons: [], isCapstone: true },
+    ],
+  },
+];
+
+export function findModule(trackSlug: string, moduleSlug: string) {
+  const track = TRACKS.find((t) => t.slug === trackSlug);
+  const module = track?.modules.find((m) => m.slug === moduleSlug);
+  return { track, module };
+}
+
+export function findLesson(trackSlug: string, moduleSlug: string, lessonSlug: string) {
+  const { track, module } = findModule(trackSlug, moduleSlug);
+  const lesson = module?.lessons.find((l) => l.slug === lessonSlug);
+  return { track, module, lesson };
+}
+
+export function totalLessons(): number {
+  return TRACKS.reduce(
+    (sum, t) => sum + t.modules.reduce((s, m) => s + m.lessons.length, 0),
+    0
+  );
+}
