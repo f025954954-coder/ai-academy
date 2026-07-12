@@ -1,0 +1,89 @@
+"use client";
+
+import { Trophy, Brain } from "lucide-react";
+import { LessonShell, type LessonMeta, type LessonSection } from "@/components/lesson/lesson-shell";
+import { SlideDeck, type Slide } from "@/components/slides/slide-deck";
+import { SpamClassifierLab } from "@/components/simulators/spam-classifier-lab";
+import { QuizEngine, type QuizQuestion } from "@/components/quiz/quiz-engine";
+
+const META: LessonMeta = {
+  trackSlug: "ai-foundations",
+  moduleSlug: "ml-intro",
+  lessonSlug: "project-spam-classifier",
+  title: "פרויקט מודול: בניית מסווג ספאם אינטראקטיבי",
+  objectives: [
+    "לכוונן משקלים (weights) של מילות מפתח ולראות איך זה משפיע על דיוק המודל",
+    "לחוות באופן מוחשי מהו 'אימון' ולמה איזון (לא overfitting) קריטי",
+  ],
+  estMinutes: 35,
+  difficulty: "בינוני",
+  prerequisites: ["מדדי הצלחה: Accuracy, Precision, Recall, Overfitting"],
+};
+
+const SLIDES: Slide[] = [
+  {
+    title: "🏆 האתגר: הגע ל-100% דיוק",
+    bullets: [
+      "למטה 10 הודעות אמיתיות (5 ספאם, 5 לא). לכל מודל יש 'משקלים' למילות מפתח ו'סף' להחלטה.",
+      "המשימה: כוונן את המשקלים והסף כדי לסווג את כל 10 ההודעות נכון — בלי לפגוע ביכולת ההכללה (זה בדיוק מה שמודל אמיתי עושה באימון, רק אוטומטית).",
+      "שים לב: מודל אמיתי לא 'רואה' את תשובות המבחן כמוך — הוא לומד ממערך אימון נפרד ונבדק על מערך test. כאן אתה משחק את שני התפקידים.",
+    ],
+  },
+];
+
+const QUIZ: QuizQuestion[] = [
+  {
+    id: "q1",
+    question: "אם תכוונן משקלים בדיוק כדי לסווג נכון את כל 10 הדוגמאות שאתה רואה, האם המודל בהכרח יעבוד טוב על הודעות חדשות?",
+    options: [
+      "כן, תמיד",
+      "לא בהכרח — זה יכול להיות overfitting למערך הקטן שראית",
+      "זה לא רלוונטי",
+      "רק אם יש בדיוק 10 דוגמאות בעולם",
+    ],
+    correctIndex: 1,
+    explanation: "כיוונון מדויק מדי למערך קטן הוא בדיוק overfitting — מודל אמיתי נבדק תמיד על נתונים שלא ראה.",
+  },
+];
+
+const SECTIONS: LessonSection[] = [
+  { id: "slides", label: "האתגר שלך", content: <SlideDeck slides={SLIDES} /> },
+  {
+    id: "lab",
+    label: "מעבדת אימון — כוונן את המודל",
+    content: (
+      <div>
+        <div className="mb-3 flex items-center gap-2 rounded-xl border border-primary/30 bg-primary/5 p-4 text-sm">
+          <Trophy size={18} className="shrink-0 text-primary" />
+          <span>נסה להגיע ל-100% accuracy — ואז שאל את עצמך: האם המודל הזה יעבוד גם על הודעות שלא ראית?</span>
+        </div>
+        <SpamClassifierLab />
+      </div>
+    ),
+  },
+  { id: "quiz", label: "בוחן ידע", content: <QuizEngine questions={QUIZ} /> },
+  {
+    id: "summary",
+    label: "סיכום המודול",
+    content: (
+      <div className="rounded-xl bg-card p-5 text-sm">
+        <div className="mb-2 flex items-center gap-2 font-bold">
+          <Brain size={18} className="text-primary" /> מה כיסינו במודול &quot;מבוא ל-AI ולמידת מכונה&quot;
+        </div>
+        <ul className="space-y-1.5">
+          <li>✅ ההבדלים בין AI, ML, DL ו-LLM</li>
+          <li>✅ שלושת סוגי הלמידה: מונחית, לא-מונחית, חיזוקית</li>
+          <li>✅ מדדי הצלחה: Accuracy, Precision, Recall, ו-Overfitting</li>
+          <li>✅ בנייה וכוונון של מסווג ספאם אינטראקטיבי במו ידיך</li>
+        </ul>
+        <p className="mt-3 text-muted">
+          במודול הבא נעמיק ברשתות נוירונים ולמידה עמוקה — הבסיס הטכני שעליו בנויים כל מודלי השפה הגדולים.
+        </p>
+      </div>
+    ),
+  },
+];
+
+export default function Page() {
+  return <LessonShell meta={META} sections={SECTIONS} />;
+}
