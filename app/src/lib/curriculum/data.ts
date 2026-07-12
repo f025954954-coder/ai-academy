@@ -1095,7 +1095,38 @@ export const TRACKS: TrackSummary[] = [
           },
         ],
       },
-      { slug: "fine-tuning", title: "מושגי Fine-tuning", description: "LoRA, evaluation", projectBrief: "הערכת מודל מותאם", lessons: [] },
+      {
+        slug: "fine-tuning",
+        title: "מושגי Fine-tuning",
+        description: "LoRA, evaluation",
+        projectBrief: "הערכת מודל מותאם מול RAG/פרומפט",
+        lessons: [
+          {
+            slug: "fine-tuning-vs-rag-vs-prompting",
+            title: "Fine-tuning מול RAG מול Prompt Engineering",
+            objectives: [
+              "להבין מתי fine-tuning נחוץ ומתי RAG/פרומפט מספיקים (ולמה זה כמעט תמיד האחרון)",
+              "להכיר LoRA כשיטה יעילה יותר מ-fine-tuning מלא",
+              "להבין את העלות והזמן הגבוהים של fine-tuning יחסית לחלופות",
+            ],
+            estMinutes: 30,
+            difficulty: "מתקדם",
+            prerequisites: ["פרויקט מודול: AtlasDesk מקבל אוטומציה מונעת-webhook"],
+          },
+          {
+            slug: "evaluating-fine-tuned-models",
+            title: "הערכת מודלים מותאמים",
+            objectives: [
+              "להכיר מדדי הערכה בסיסיים (accuracy, human eval, A/B testing מול המודל הבסיסי)",
+              "להבין את הסיכון של overfitting על סט הדוגמאות שאומן עליו",
+              "לזהות מתי מודל מותאם 'משתפר' רק על הנייר אך לא בפועל",
+            ],
+            estMinutes: 25,
+            difficulty: "מתקדם",
+            prerequisites: ["fine-tuning-vs-rag-vs-prompting"],
+          },
+        ],
+      },
     ],
   },
   {
