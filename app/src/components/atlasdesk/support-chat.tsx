@@ -23,15 +23,23 @@ interface Msg {
   toolLog?: ToolLogEntry[];
   sources?: SourceEntry[];
   stoppedReason?: string;
+  agent?: string;
+  escalationReason?: string;
 }
 
-type ChatMode = "plain" | "tools" | "rag" | "agent";
+type ChatMode = "plain" | "tools" | "rag" | "agent" | "multiAgent";
 
 const MODE_ENDPOINT: Record<ChatMode, string> = {
   plain: "/api/ai/chat",
   tools: "/api/ai/tool-chat",
   rag: "/api/ai/rag-chat",
   agent: "/api/ai/agent-chat",
+  multiAgent: "/api/ai/multi-agent-chat",
+};
+
+const AGENT_LABEL: Record<string, string> = {
+  general: "🙋 נציג כללי",
+  "billing-specialist": "💳 מומחה חיוב (אחרי אסקלציה)",
 };
 
 const STOPPED_REASON_LABEL: Record<string, string> = {
@@ -111,6 +119,8 @@ export function SupportChat() {
           toolLog: data.toolLog,
           sources: data.sources,
           stoppedReason: data.stoppedReason,
+          agent: data.agent,
+          escalationReason: data.escalationReason,
         },
       ]);
     } catch {
@@ -153,6 +163,15 @@ export function SupportChat() {
             }`}
           >
             🤖 סוכן
+          </button>
+          <button
+            onClick={() => setMode((m) => (m === "multiAgent" ? "plain" : "multiAgent"))}
+            title="מערכת רב-סוכנית — מסלים שאלות חיוב מורכבות לסוכן מומחה (נסה: 'אני רוצה זיכוי על חיוב כפול')"
+            className={`rounded-full border px-3 py-1 text-xs font-semibold transition ${
+              mode === "multiAgent" ? "border-primary bg-primary/10 text-primary" : "border-border text-muted"
+            }`}
+          >
+            👥 רב-סוכני
           </button>
           <button
             onClick={() => setDevMode((d) => !d)}
@@ -212,6 +231,12 @@ export function SupportChat() {
               {m.stoppedReason && STOPPED_REASON_LABEL[m.stoppedReason] && (
                 <p className="mt-1.5 rounded bg-warning/10 px-1.5 py-1 text-[10px] text-warning">
                   {STOPPED_REASON_LABEL[m.stoppedReason]}
+                </p>
+              )}
+              {m.agent && AGENT_LABEL[m.agent] && (
+                <p className="mt-1.5 rounded bg-primary/10 px-1.5 py-1 text-[10px] text-primary">
+                  {AGENT_LABEL[m.agent]}
+                  {m.escalationReason && ` — סיבת אסקלציה: ${m.escalationReason}`}
                 </p>
               )}
               {devMode && m.usage && (
